@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation</description>
+    <link>https://victorafanasev.info/</link>
+    <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 04 Oct 2018 11:56:41 +0400</pubDate>
+    <lastBuildDate>Thu, 04 Oct 2018 11:56:41 +0400</lastBuildDate>
+    <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Deploy Jekyll build to Github Pages using Git pre-push hook</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/docs/deployment-methods/#git-post-update-hook&quot;&gt;There are examples&lt;/a&gt; how to automatically deploy Jekyll site build using Git’s &lt;code class=&quot;highlighter-rouge&quot;&gt;post-update&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;post-receive&lt;/code&gt; hooks which are &lt;a href=&quot;https://www.digitalocean.com/community/tutorials/how-to-use-git-hooks-to-automate-development-and-deployment-tasks#basic-idea-with-git-hooks&quot;&gt;server-side hooks&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I think it’s much more simple to use &lt;code class=&quot;highlighter-rouge&quot;&gt;pre-push&lt;/code&gt; client-side (executes on your desktop) hook to automatically push a new site build to &lt;a href=&quot;https://pages.github.com/&quot;&gt;Github Pages&lt;/a&gt; before pushing to your Jekyll project repository.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;strong&gt;Example:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;I have my Jekyll blog repository &lt;code class=&quot;highlighter-rouge&quot;&gt;blog&lt;/code&gt; hosted on a private Bitbucket repo. As a webhosting for my compiled version of a blog &lt;code class=&quot;highlighter-rouge&quot;&gt;$ bundle exec jekyll build&lt;/code&gt; I use &lt;code class=&quot;highlighter-rouge&quot;&gt;github-pages&lt;/code&gt; (repo &lt;a href=&quot;https://github.com/vifreefly/vifreefly.github.io&quot;&gt;vifreefly.github.io&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;When I pushing a new commit (for example added new post under &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts/&lt;/code&gt; directory) to remote &lt;code class=&quot;highlighter-rouge&quot;&gt;blog&lt;/code&gt; origin, I want first to automatically build website (&lt;code class=&quot;highlighter-rouge&quot;&gt;_site/&lt;/code&gt; folder which stores compiled build by default) and push this build to &lt;code class=&quot;highlighter-rouge&quot;&gt;vfreefly.github.io&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It’s easy to implement using &lt;code class=&quot;highlighter-rouge&quot;&gt;pre-push&lt;/code&gt; git hook:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# copy this to `.git/hooks/pre-push` hook file and make it executable: `$ chmod +x pre-push`&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;gt; Hook started&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Build a website to a standard _site directory&lt;/span&gt;
+bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build
+
+&lt;span class=&quot;c&quot;&gt;# cd to the build folder&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;_site
+
+&lt;span class=&quot;c&quot;&gt;# Init a new git repo inside `_site/` if it doesn't exists&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; ! -d &lt;span class=&quot;s2&quot;&gt;&quot;.git&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then
+  &lt;/span&gt;git init
+&lt;span class=&quot;k&quot;&gt;fi
+
+if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt; ! &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git remote&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]]&lt;/span&gt;; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Add your github-pages repo (example https://github.com/vifreefly/vifreefly.github.io.git)&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# as origin for `_site` if it's not added yet:&lt;/span&gt;
+  git remote add origin https://github.com/vifreefly/vifreefly.github.io.git
+  &lt;span class=&quot;c&quot;&gt;# and push build to the github-pages repo with --force&lt;/span&gt;
+  git add . &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;Build&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push -u -f origin master
+&lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# Push build to the github-pages repo with --force&lt;/span&gt;
+  git add . &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&quot;Build&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push -f origin master
+&lt;span class=&quot;k&quot;&gt;fi
+
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&amp;lt; Hook finished&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;With this hook, when I’m doing &lt;code class=&quot;highlighter-rouge&quot;&gt;$ git push origin master&lt;/code&gt; at Jekyll &lt;code class=&quot;highlighter-rouge&quot;&gt;blog&lt;/code&gt; repository, a &lt;strong&gt;new build of a website pushes to Github Pages as well.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Also, you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;pre-push&lt;/code&gt; hook to push your blog to &lt;a href=&quot;https://medium.freecodecamp.org/how-to-host-a-website-on-s3-without-getting-lost-in-the-sea-e2b82aa6cd38&quot;&gt;AWS S3&lt;/a&gt; instead of github-pages for example.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Thu, 09 Aug 2018 11:00:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/deploy-jekyll-build-to-github-pages-using-git-pre-push-hook</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/deploy-jekyll-build-to-github-pages-using-git-pre-push-hook</guid>
+        
+        <category>jekyll</category>
+        
+        <category>automation</category>
+        
+        <category>git</category>
+        
+        <category>github-pages</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>How to use Pagy with Sinatra and Sequel</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/ddnexus/pagy&quot;&gt;Pagy&lt;/a&gt; is a modern pagination gem for Ruby. It works out of box with Rails and ActiveRecord (check out &lt;a href=&quot;https://ddnexus.github.io/pagy/how-to&quot;&gt;Quick Start guide here&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;It’s a good idea to use Pagy with Sinatra and Sequel ORM. We need to adjust some settings though, let’s see how to do it.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;First add to the Gemfile &lt;code class=&quot;highlighter-rouge&quot;&gt;pagy&lt;/code&gt; gem:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;gem 'pagy'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;app.rb:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sinatra/base'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pagy'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pagy/extras/bootstrap'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;App&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sinatra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;
+  &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Pagy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Backend&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;helpers&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;kp&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Pagy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Frontend&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/posts&quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# where Post is a Sequel model&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@pagy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@posts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pagy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;erb&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:'posts/index'&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;kp&quot;&gt;private&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pagy_get_vars&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vars&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;count: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;collection&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;page: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;params&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;page&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+      &lt;span class=&quot;ss&quot;&gt;items: &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vars&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:items&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;views/posts/index.erb &lt;em&gt;(Also don’t forget to include views/layout.erb)&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-erb highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;row&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;col-lg-12&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;h1&amp;gt;&lt;/span&gt;All Posts&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h1&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@posts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;cp&quot;&gt;&amp;lt;%&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;cp&quot;&gt;&amp;lt;%=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pagy_nav_bootstrap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;vi&quot;&gt;@pagy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;vi&quot;&gt;@pagy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;pages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;cp&quot;&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Where:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;include Pagy::Backend&lt;/code&gt; &lt;a href=&quot;https://ddnexus.github.io/pagy/api/backend&quot;&gt;backend Pagy methods&lt;/a&gt; included to the controller&lt;/li&gt;
+  &lt;li&gt;Inside &lt;code class=&quot;highlighter-rouge&quot;&gt;helpers do&lt;/code&gt; block we are including frontend pagy methods for views with extra &lt;a href=&quot;https://ddnexus.github.io/pagy/extras/bootstrap&quot;&gt;bootstrap pagination helper&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;def pagy_get_vars&lt;/code&gt; it’s a special pagy method &lt;a href=&quot;https://ddnexus.github.io/pagy/how-to.html#using-the-pagy_info-helper&quot;&gt;to override default logic&lt;/a&gt; and tell pagy how to work with custom environment than Rails. &lt;strong&gt;Count:&lt;/strong&gt; pagy uses &lt;code class=&quot;highlighter-rouge&quot;&gt;collection.count(:all)&lt;/code&gt; to get total size of records of model (ActiveRecord). It didn’t work for Sequel and correct solution will be &lt;code class=&quot;highlighter-rouge&quot;&gt;collection.count&lt;/code&gt;. &lt;strong&gt;Page:&lt;/strong&gt; provide current page param.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s all, now run Sinatra app and go to &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4567/posts?page=2&lt;/code&gt; and you’ll see nice pagination made by Pagy:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/923/1*Y64bEapTtHfPVBYgK_Fs-Q.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Comments at &lt;a href=&quot;https://medium.com/@vfreefly/how-to-use-pagy-with-sequel-and-sinatra-157dfec1c417&quot;&gt;Medium&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Fri, 03 Aug 2018 12:01:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/how-to-use-pagy-with-sequel-and-sinatra</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/how-to-use-pagy-with-sequel-and-sinatra</guid>
+        
+        <category>ruby</category>
+        
+        <category>pagy</category>
+        
+        <category>sinatra</category>
+        
+        <category>sequel</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>How to use Sequel with ActiveRecord database</title>
+        <description>&lt;p&gt;Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight &lt;a href=&quot;https://github.com/jeremyevans/sequel&quot;&gt;Sequel&lt;/a&gt; can handle this job pretty well. &lt;strong&gt;Check the guide &lt;a href=&quot;http://sequel.jeremyevans.net/rdoc/files/doc/querying_rdoc.html&quot;&gt;Querying in Sequel&lt;/a&gt;&lt;/strong&gt; to understand basics.&lt;/p&gt;
+
+&lt;p&gt;1) Add to Gemfile gems pg and sequel:&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pg'&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;gem&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sequel'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;2) Create module &lt;code class=&quot;highlighter-rouge&quot;&gt;DB&lt;/code&gt; which contains AR models which you want to query. Sequel models have very similar syntax like ActiveRecord:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'pg'&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'sequel'&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;default_timezone&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:utc&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;DB&lt;/span&gt;
+  &lt;span class=&quot;no&quot;&gt;URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;postgres://user:password@localhost/database_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Product&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:timestamps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;update_on_create: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;many_to_one&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:brand&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;Brand&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:timestamps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;update_on_create: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;one_to_many&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:products&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This is it. &lt;strong&gt;Lets dig into details:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;default_timezone&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:utc&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Rails stores all dates in database using UTC format, where Sequel uses local time. We have to tell Sequel to use UTC instead.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;URL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;Sequel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;postgres://user:password@localhost/database_name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This is a &lt;code class=&quot;highlighter-rouge&quot;&gt;DATABASE_URL&lt;/code&gt;, format same as in Active Record. It is a good idea to put this string to &lt;code class=&quot;highlighter-rouge&quot;&gt;.env&lt;/code&gt; file using Dotenv and then: &lt;code class=&quot;highlighter-rouge&quot;&gt;URL = Sequel.connect(ENV[&quot;DATABASE_URL&quot;])&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:timestamps&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;update_on_create: &lt;/span&gt;&lt;span class=&quot;kp&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;If you want to create or update models as well, timestamps plugin will handle &lt;code class=&quot;highlighter-rouge&quot;&gt;created_at&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;updated_at&lt;/code&gt; exact the same way as ActiveRecord.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Relations, where &lt;code class=&quot;highlighter-rouge&quot;&gt;one_to_many&lt;/code&gt; equal to AR’s &lt;code class=&quot;highlighter-rouge&quot;&gt;belongs_to&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;many_to_one&lt;/code&gt; equal to AR’s &lt;code class=&quot;highlighter-rouge&quot;&gt;has_many&lt;/code&gt;. Read about Sequel relations more &lt;a href=&quot;http://sequel.jeremyevans.net/rdoc/files/doc/association_basics_rdoc.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;And now you have everything to start:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;DB&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;first&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;product&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;brand&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# etc.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;There is full &lt;strong&gt;Sequel documentation&lt;/strong&gt; &lt;a href=&quot;http://sequel.jeremyevans.net/documentation.html&quot;&gt;http://sequel.jeremyevans.net/documentation.html&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Also, Sequel works with threads a bit simpler than ActiveRecord. If you ever tried to query AR inside threads, you know that connection pool can easy exceed and AR will raise an exception. That’s why in such cases all code which works with AR inside of threads should be wrapped to&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;ActiveRecord&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;Base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;connection_pool&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;with_connection&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Do stuff&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;block.&lt;/p&gt;
+
+&lt;p&gt;Sequel does this automatically for you. You don’t have to do anything, and this is great. Read about it more here: &lt;a href=&quot;https://mrbrdo.wordpress.com/2013/10/15/why-you-should-stop-using-activerecord-and-start-using-sequel/&quot;&gt;Why you should stop using ActiveRecord and start using Sequel&lt;/a&gt; (“Threading” part).&lt;/p&gt;
+</description>
+        <pubDate>Fri, 13 Jul 2018 12:01:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database</guid>
+        
+        <category>ruby</category>
+        
+        <category>sequel</category>
+        
+        <category>postgres</category>
+        
+        <category>RoR</category>
+        
+        <category>ActiveRecord</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>Increase readability of your bash scripts using functions</title>
+        <description>&lt;p&gt;You can find it very obvious, but there are tons of bash scripts out there written very badly.&lt;/p&gt;
+
+&lt;p&gt;People often forget that Bash &lt;a href=&quot;https://stackoverflow.com/questions/28693737/is-bash-a-programming-language&quot;&gt;actually a programming language&lt;/a&gt;. And just like &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions&quot;&gt;JavaScript&lt;/a&gt;, &lt;a href=&quot;https://docs.python.org/2.4/lib/typesmethods.html&quot;&gt;Python&lt;/a&gt;, &lt;a href=&quot;http://rubylearning.com/satishtalim/writing_own_ruby_methods.html&quot;&gt;Ruby&lt;/a&gt;, &lt;a href=&quot;https://tour.golang.org/basics/4&quot;&gt;GoLang&lt;/a&gt; and many others languages, Bash language has functions.&lt;/p&gt;
+
+&lt;p&gt;Let’s check simple bash function which prints green string taken as an argument:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logger&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[1;32m&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[00m&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Logger: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;First two variables it’s &lt;a href=&quot;https://en.wikipedia.org/wiki/ANSI_escape_code#Colors&quot;&gt;ANSI color codes&lt;/a&gt;, I used green color here to make logger message colored.&lt;/p&gt;
+
+&lt;p&gt;What’s interesting here it’s how functions take parameters/arguments. Simply, they don’t. You can’t specify arguments while declaring function, but it’s still possible to use passed arguments in function body calling them &lt;code class=&quot;highlighter-rouge&quot;&gt;$1&lt;/code&gt; , &lt;code class=&quot;highlighter-rouge&quot;&gt;$2&lt;/code&gt; , &lt;code class=&quot;highlighter-rouge&quot;&gt;$3&lt;/code&gt; , etc:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hello&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hello,&quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;hello world
+&lt;span class=&quot;c&quot;&gt;# prints: Hello, world&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;So thats how &lt;code class=&quot;highlighter-rouge&quot;&gt;logger()&lt;/code&gt; function works.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/923/1*rUUpGX3bTI-H0Uc5oaWqMA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now when we understood how to write functions, &lt;strong&gt;it’s time to see&lt;/strong&gt; how we can use them for good.&lt;/p&gt;
+
+&lt;p&gt;Let’s write bash automation script which installs all required modern ruby environment on Ubuntu 16.04 — 18.04:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Latest ruby version using &lt;a href=&quot;https://github.com/rbenv/rbenv&quot;&gt;Rbenv&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://bundler.io/&quot;&gt;Bundler&lt;/a&gt; gem (to manage ruby dependencies)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All required steps for script takes from awesome gorails manual &lt;a href=&quot;https://gorails.com/setup/ubuntu/18.04&quot;&gt;Setup Ruby On Rails on Ubuntu 18.04 Bionic Beaver&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Here is a full script: &lt;a href=&quot;https://gist.github.com/vfreefly/77dc46d7d9ef3b0a6c17debfdfb73eb5&quot;&gt;ruby_install.sh&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check latest here https://www.ruby-lang.org/en/downloads/releases/&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;RUBY_VERSION&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2.5.1
+
+logger&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[1;32m&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[00m&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Logger: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+ruby_compiling_dependencies_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing ruby build dependencies...&quot;&lt;/span&gt;
+  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+rbenv_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing rbenv...&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf ~/.rbenv
+  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;'&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'eval &quot;$(rbenv init -)&quot;'&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+
+  &lt;span class=&quot;c&quot;&gt;# export rbenv path for further ruby installation using rbenv&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.rbenv/bin:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+ruby_version_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing ruby &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;RUBY_VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;...&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CONFIGURE_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;--disable-install-doc&quot;&lt;/span&gt;
+  rbenv install &lt;span class=&quot;nv&quot;&gt;$RUBY_VERSION&lt;/span&gt;
+
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Enabling ruby &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;RUBY_VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; as global version...&quot;&lt;/span&gt;
+  rbenv global &lt;span class=&quot;nv&quot;&gt;$RUBY_VERSION&lt;/span&gt;
+
+  rbenv rehash
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+bundler_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# gems config, disable downloading gems documentation&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;gem: --no-ri --no-rdoc&quot;&lt;/span&gt; &amp;gt; ~/.gemrc &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod 644 ~/.gemrc
+
+  &lt;span class=&quot;c&quot;&gt;# install bundler&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing bundler...&quot;&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;gem install bundler
+
+  &lt;span class=&quot;c&quot;&gt;# bundler config, allow to install gems from insecure sources (git)&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bundle config --global git.allow_insecure &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# enable parallel gems installation (4 in parallel)&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bundle config --global &lt;span class=&quot;nb&quot;&gt;jobs &lt;/span&gt;4
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+main&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  ruby_compiling_dependencies_install
+  rbenv_install
+  ruby_version_install
+  bundler_install
+
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;All done! Don't forget to reload env variables in your terminal session: '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; exec &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;SHELL'&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Step by step:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;&lt;/code&gt; — at the beginning of the script there is &lt;a href=&quot;https://en.wikipedia.org/wiki/Shebang_%28Unix%29&quot;&gt;shebang&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Next there is logger function just for convenience, to control script execution process:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;logger&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[1;32m&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;local &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\0&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;33[00m&quot;&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; -e &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;GREEN&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Logger: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;NC&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To compile and install ruby version, first we need to install all required packages:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby_compiling_dependencies_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing ruby build dependencies...&quot;&lt;/span&gt;
+  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Next we are going to install Rbenv, wrapping all required steps for this in the function &lt;code class=&quot;highlighter-rouge&quot;&gt;rbenv_install&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;rbenv_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing rbenv...&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf ~/.rbenv
+  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'export PATH=&quot;$HOME/.rbenv/bin:$PATH&quot;'&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'eval &quot;$(rbenv init -)&quot;'&lt;/span&gt; &amp;gt;&amp;gt; ~/.bashrc
+
+  &lt;span class=&quot;c&quot;&gt;# export rbenv path for further ruby installation using rbenv&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$HOME&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/.rbenv/bin:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$PATH&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After successfully installing Rbenv, we can install Ruby itself:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ruby_version_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing ruby &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;RUBY_VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;...&quot;&lt;/span&gt;
+
+  &lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;CONFIGURE_OPTS&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;--disable-install-doc&quot;&lt;/span&gt;
+  rbenv install &lt;span class=&quot;nv&quot;&gt;$RUBY_VERSION&lt;/span&gt;
+
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Enabling ruby &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;RUBY_VERSION&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; as global version...&quot;&lt;/span&gt;
+  rbenv global &lt;span class=&quot;nv&quot;&gt;$RUBY_VERSION&lt;/span&gt;
+
+  rbenv rehash
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Last step is to install Bundler gem, since it’s very common dependency manager in the Ruby world:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;bundler_install&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# gems config, disable downloading gems documentation&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;gem: --no-ri --no-rdoc&quot;&lt;/span&gt; &amp;gt; ~/.gemrc &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod 644 ~/.gemrc
+
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;Installing bundler...&quot;&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;gem install bundler
+
+  &lt;span class=&quot;c&quot;&gt;# bundler config, allow to install gems from insecure sources (git)&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bundle config --global git.allow_insecure &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+  &lt;span class=&quot;c&quot;&gt;# enable parallel gems installation (4 in parallel)&lt;/span&gt;
+  rbenv &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;bundle config --global &lt;span class=&quot;nb&quot;&gt;jobs &lt;/span&gt;4
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After all functions declared, it’s good practice to wrap everything to the main function:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;main&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+  ruby_compiling_dependencies_install
+  rbenv_install
+  ruby_version_install
+  bundler_install
+
+  logger &lt;span class=&quot;s2&quot;&gt;&quot;All done! Don't forget to reload env variables in your terminal session: '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; exec &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;SHELL'&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And at the end call this main function:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;All done! &lt;strong&gt;You can execute bash script&lt;/strong&gt; using two ways:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;First way is to execute script by passing path to the script to the bash interpreter: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ bash ruby_install.sh&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;Second way is to make script executable first: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ chmod +x ruby_install.sh&lt;/code&gt; and then just call script: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ ./ruby_install.sh&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 21 Jun 2018 12:01:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions</guid>
+        
+        <category>linux</category>
+        
+        <category>bash</category>
+        
+        <category>devops</category>
+        
+        <category>automation</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>Create free HTTPS/SOCKS5 proxy servers using AWS Free Tier EC2 instances automatically with Terraform</title>
+        <description>&lt;p&gt;For scraping purposes, I need good quality proxies every day for 1–2 hours, when my web crawlers are running. I don’t need proxies 24/hours per day.&lt;/p&gt;
+
+&lt;p&gt;So it makes sense to use AWS EC2 &lt;a href=&quot;https://aws.amazon.com/ec2/instance-types/&quot;&gt;t2.nano/t2.micro&lt;/a&gt; instances for proxy servers and create/destroy them on demand within HTTP API.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;strong&gt;Benefits of this approach:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;If you are not reached &lt;a href=&quot;https://aws.amazon.com/free/&quot;&gt;AWS Free Tier&lt;/a&gt; yet, that means you have &lt;a href=&quot;https://aws.amazon.com/free/faqs/?ft=n&quot;&gt;750 hours&lt;/a&gt; and &lt;a href=&quot;https://aws.amazon.com/free/faqs/?ft=n&quot;&gt;15 GB of outbound traffic&lt;/a&gt; per month for free, for &lt;a href=&quot;https://aws.amazon.com/ec2/faqs/#How_many_instances_can_I_run_in_Amazon_EC2&quot;&gt;up to 20 EC2 instances&lt;/a&gt; (VPS servers) running at the same time. For example, you’ll spend only 600 hours/month, if you need 20 proxies per day for a one hour (20 x 1 x 30 = 600).&lt;/li&gt;
+  &lt;li&gt;When you’ll exceed 15 GB/month free tier limit of outbound traffic, AWS will charge you only &lt;a href=&quot;https://aws.amazon.com/ec2/pricing/on-demand/&quot;&gt;$0.090 per additional GB&lt;/a&gt;. I think it’s pretty cheap.&lt;/li&gt;
+  &lt;li&gt;Each new instance (or instance which was stopped and started again) &lt;a href=&quot;https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-instance-addressing.html#concepts-public-addresses&quot;&gt;will get a random IPv4 address&lt;/a&gt; from pool, so each time we’ll have fresh proxy IP’s.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Even if free tier is not available for you, price for &lt;a href=&quot;https://aws.amazon.com/ec2/pricing/on-demand/&quot;&gt;EC2 t2.nano&lt;/a&gt; instance is only &lt;em&gt;$0.0058 per Hour&lt;/em&gt;, and price for 1 GB outbound traffic is &lt;em&gt;$0.090.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;To automate the process of creation EC2 instances&lt;/strong&gt; and installation proxy server software, I used next tools:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.terraform.io/&quot;&gt;Terraform&lt;/a&gt; to automatically &lt;strong&gt;create/install software/destroy&lt;/strong&gt; EC2 instances&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/snail007/goproxy&quot;&gt;Goproxy&lt;/a&gt; for a proxy server. Simple but powerful: one-line command installation, zero configuration. HTTPS, SOCKS5 proxy with optional authorization out of box&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://sinatrarb.com/&quot;&gt;Ruby Sinatra gem&lt;/a&gt; for HTTP API to manage proxy instances (optional)&lt;/li&gt;
+  &lt;li&gt;Ubuntu 16.04 server&lt;/li&gt;
+  &lt;li&gt;Systemd to convert goproxy process to the system daemon service&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;To give a try, check the project repo&lt;/strong&gt; on github here: &lt;a href=&quot;https://github.com/vfreefly/ec2_proxies&quot;&gt;https://github.com/vfreefly/ec2_proxies&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Comments at &lt;a href=&quot;https://medium.com/@vfreefly/create-free-https-socks5-proxy-servers-using-aws-free-tier-ec2-instances-automatically-on-demand-517ad5c9c0bb&quot;&gt;Medium&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 11 Jun 2018 12:01:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/create-free-https-socks5-proxy-servers-using-free-ec2-automatically</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/create-free-https-socks5-proxy-servers-using-free-ec2-automatically</guid>
+        
+        <category>aws</category>
+        
+        <category>linux</category>
+        
+        <category>terraform</category>
+        
+        <category>automation</category>
+        
+        <category>devops</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>How to create AWS restricted credentials (example for s3)</title>
+        <description>&lt;p&gt;1) Go to &lt;a href=&quot;https://console.aws.amazon.com/iam/home?#/users&quot;&gt;https://console.aws.amazon.com/iam/home?#/users&lt;/a&gt; and create new user then press next&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2) Set permissions for your user by &lt;em&gt;Attach one or more existing policies directly&lt;/em&gt; and then press next&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*VJC8IvPGhGK8ojRvehoW_g.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*VJC8IvPGhGK8ojRvehoW_g.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;3) Check if everything is ok and press &lt;em&gt;create user&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;4)  All done, save your &lt;em&gt;Access key ID&lt;/em&gt; and &lt;em&gt;Secret access key&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*M9FoR218z2HQcfo8bxR0IA.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*M9FoR218z2HQcfo8bxR0IA.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see all your credentials here &lt;a href=&quot;https://console.aws.amazon.com/iam/home?#/users&quot;&gt;https://console.aws.amazon.com/iam/home?#/users&lt;/a&gt; (1 user = 1 credential)&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*gH3H2OVd61WwGkuRmG8onw.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*gH3H2OVd61WwGkuRmG8onw.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Now you can use this credential and it will have access only for s3 operations, all other operations will fail to process (like creating EC2 instances).&lt;/p&gt;
+
+&lt;p&gt;It is good practice to use different (and restricted) credentials (that means different users, because 1 user = 1 credential) for different apps so you can always control all your AWS usage per app.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Additional reading:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Restrict Steps &lt;a href=&quot;https://www.netguru.co/blog/my-first-5-minutes-on-an-aws-account&quot;&gt;https://www.netguru.co/blog/my-first-5-minutes-on-an-aws-account&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Best Security Practices by amazon &lt;a href=&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console&quot;&gt;https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 06 Jun 2018 12:01:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3</guid>
+        
+        <category>devops</category>
+        
+        <category>aws</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+      <item>
+        <title>Simplest configuration block implementation for a ruby gem ever</title>
+        <description>&lt;p&gt;For my own gems, I want to have a configuration block, which usually looks like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;There are a lot of articles how to implement this functionality:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://brandonhilkert.com/blog/ruby-gem-configuration-patterns/&quot;&gt;Ruby Gem Configuration Patterns&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://robots.thoughtbot.com/mygem-configure-block&quot;&gt;MyGem.configure Block&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://lizabinante.com/blog/creating-a-configurable-ruby-gem/&quot;&gt;Creating a configurable Ruby gem&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://juanitofatas.com/blog/2015/05/19/rubygem_configuration_pattern&quot;&gt;RubyGem Configuration Pattern&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.skcript.com/svr/the-easiest-configuration-block-for-your-ruby-gems/&quot;&gt;The easiest configuration block for your Ruby gems&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.toshimaru.net/ruby-configuration-pattern/&quot;&gt;Ruby Gem Configuration Pattern&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Isn’t it still looks too complicated? Can’t be a configuration object just a plain ruby hash?&lt;/p&gt;
+
+&lt;p&gt;Yes, it can:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Yourgem&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And now:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:some_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; { :some_config =&amp;gt; &quot;foobarbaz&quot; }&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:some_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;foobarbaz&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Looks clean and simple, but there is one restriction: instead of classy &lt;code class=&quot;highlighter-rouge&quot;&gt;Yourgem.configuration.some_config&lt;/code&gt; we have to act with it like with hash (because configuration value it’s a hash): &lt;code class=&quot;highlighter-rouge&quot;&gt;Yourgem.configuration[:some_config]&lt;/code&gt;. To solve this problem, we’ll use Ruby’s built-in &lt;a href=&quot;https://ruby-doc.org/stdlib-2.0.0/libdoc/ostruct/rdoc/OpenStruct.html&quot;&gt;OpenStruct&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ostruct'&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Yourgem&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;
+    &lt;span class=&quot;vi&quot;&gt;@configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And now:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; #&amp;lt;OpenStruct some_config=&quot;foobarbaz&quot;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;foobarbaz&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Clean and simple.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Comments at &lt;a href=&quot;https://medium.com/@vfreefly/the-most-simple-configuration-block-implementation-for-a-ruby-gem-815fe1dad5dc&quot;&gt;Medium&lt;/a&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Wed, 09 May 2018 12:00:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem</guid>
+        
+        <category>ruby</category>
+        
+        <category>gems</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
+    
+  </channel>
+</rss>

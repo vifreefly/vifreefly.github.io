@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Increase readability of your bash scripts using functions | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer </title>
+    <meta property="og:title" content="Increase readability of your bash scripts using functions | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+    <meta name="twitter:title" content="Increase readability of your bash scripts using functions | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+
+    <meta name="description" content="People often forget that Bash actually a programming language. And just like JavaScript, Python, Ruby, GoLang and many others languages, Bash language has fu...">
+    <meta name="description" property="og:description" content="People often forget that Bash actually a programming language. And just like JavaScript, Python, Ruby, GoLang and many others languages, Bash language has fu..." />
+    <meta name="twitter:description" content="People often forget that Bash actually a programming language. And just like JavaScript, Python, Ruby, GoLang and many others languages, Bash language has fu..." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <meta name="twitter:site" content="@vfreefl" />
+    
+    <meta property="og:url" content="https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions" />
+
+    <meta property="og:image" content="" />
+    <meta name="twitter:image" content="" />
+
+    <meta name="author" content="Blog | Victor Afanasev" />
+
+    <meta name="copyright" content="Copyright by Blog | Victor Afanasev. All Rights Reserved." />
+
+    <style>
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 300;
+            src: local('Roboto Light'), local('Roboto-Light'), url(https://fonts.gstatic.com/s/roboto/v15/Hgo13k-tfSpn0qi1SFdUfVtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Roboto'), local('Roboto-Regular'), url(https://fonts.gstatic.com/s/roboto/v15/CWB0XYA8bzo0kSThX0UTuA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 700;
+            src: local('Roboto Bold'), local('Roboto-Bold'), url(https://fonts.gstatic.com/s/roboto/v15/d-6IYplOFocCacKzxwXSOFtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 900;
+            src: local('Roboto Black'), local('Roboto-Black'), url(https://fonts.gstatic.com/s/roboto/v15/mnpfi9pxYH-Go5UiibESIltXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 300;
+            src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://fonts.gstatic.com/s/roboto/v15/7m8l7TlFO-S3VkhHuR0at44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 400;
+            src: local('Roboto Italic'), local('Roboto-Italic'), url(https://fonts.gstatic.com/s/roboto/v15/vPcynSL0qHq_6dX7lKVByfesZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 700;
+            src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://fonts.gstatic.com/s/roboto/v15/t6Nd4cfPRhZP44Q5QAjcC44P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+
+        @font-face {
+            font-family: 'Roboto';
+            font-style: italic;
+            font-weight: 900;
+            src: local('Roboto Black Italic'), local('Roboto-BlackItalic'), url(https://fonts.gstatic.com/s/roboto/v15/bmC0pGMXrhphrZJmniIZpY4P5ICox8Kq3LLUNMylGO4.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+        }
+    </style>
+    
+    <link href="/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    
+    <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
+
+    <link rel="canonical" href="https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions">
+
+    <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
+</head>
+
+
+    <body>
+        <div class="wrapper clear">
+            <aside class="user-profile fixed" role="complementary">
+    <div class="burger">
+        <input class="trigger hidden" id="toggleBurger" type="checkbox" />
+        <label for="toggleBurger">
+            <span>Navigation</span>
+        </label>
+    </div>
+
+    <div class="compact-header">
+        <a href="https://victorafanasev.info"><img class="avatar" src="/avatar.jpg" /></a>
+        <div class="my-info">
+            <strong class="my-name">Blog | Victor Afanasev</strong>
+            <span class="my-job-title">Ruby/ROR backend developer</span>
+        </div>
+    </div>
+
+    
+        
+        <div class="mainmenu">
+            <a href="https://victorafanasev.info" >Home</a>
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+                
+            
+        </div>
+        
+    
+
+    <p class="about-me">Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation</p>
+
+    <ul class="socials">
+        <li><a href="https://www.linkedin.com/in/victorafanasev/"><svg title="linkedin" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#linkedin-icon"></use></svg></a></li><li><a href="https://github.com/vifreefly"><svg title="github" width="16" height="16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#github-icon"></use></svg></a></li>
+
+        
+            <li><a href="mailto:vicfreefly@gmail.com"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#email-icon"></use></svg></a></li>
+        
+
+        
+    </ul>
+</aside>
+
+            <main class="the-content" role="main">
+                <div class="search" role="search">
+    <div>
+        <div class="show-results-count">0 Results</div>
+        <div class="search-holder clear">
+            <input type="text" id="search-input" placeholder="search for...">
+        </div>
+    </div>
+    <ul id="results-container" class="results-container"></ul>
+</div>
+
+
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul class="clear">
+            <li><time datetime="2018-06-21T12:01:00+04:00" itemprop="datePublished">21 Jun, 2018</time></li>
+            
+                
+                <li class="cats">
+                    
+                        <a href="/categories/tech/">tech</a>
+                    
+                </li>
+                
+            
+        </ul>
+        <h2 itemprop="name headline">Increase readability of your bash scripts using functions</h2>
+    </header>
+
+    <div class="post-content">
+        <p>You can find it very obvious, but there are tons of bash scripts out there written very badly.</p>
+
+<p>People often forget that Bash <a href="https://stackoverflow.com/questions/28693737/is-bash-a-programming-language">actually a programming language</a>. And just like <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions">JavaScript</a>, <a href="https://docs.python.org/2.4/lib/typesmethods.html">Python</a>, <a href="http://rubylearning.com/satishtalim/writing_own_ruby_methods.html">Ruby</a>, <a href="https://tour.golang.org/basics/4">GoLang</a> and many others languages, Bash language has functions.</p>
+
+<p>Let’s check simple bash function which prints green string taken as an argument:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
+  <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
+
+  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<!--more-->
+
+<p>First two variables it’s <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#Colors">ANSI color codes</a>, I used green color here to make logger message colored.</p>
+
+<p>What’s interesting here it’s how functions take parameters/arguments. Simply, they don’t. You can’t specify arguments while declaring function, but it’s still possible to use passed arguments in function body calling them <code class="highlighter-rouge">$1</code> , <code class="highlighter-rouge">$2</code> , <code class="highlighter-rouge">$3</code> , etc:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>hello<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">"Hello,"</span> <span class="nv">$1</span>
+<span class="o">}</span>
+
+<span class="gp">$ </span>hello world
+<span class="c"># prints: Hello, world</span>
+</code></pre>
+</div>
+
+<p>So thats how <code class="highlighter-rouge">logger()</code> function works.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/923/1*rUUpGX3bTI-H0Uc5oaWqMA.png" alt="" /></p>
+
+<p><br /></p>
+
+<p>Now when we understood how to write functions, <strong>it’s time to see</strong> how we can use them for good.</p>
+
+<p>Let’s write bash automation script which installs all required modern ruby environment on Ubuntu 16.04 — 18.04:</p>
+
+<ul>
+  <li>Latest ruby version using <a href="https://github.com/rbenv/rbenv">Rbenv</a></li>
+  <li><a href="https://bundler.io/">Bundler</a> gem (to manage ruby dependencies)</li>
+</ul>
+
+<p>All required steps for script takes from awesome gorails manual <a href="https://gorails.com/setup/ubuntu/18.04">Setup Ruby On Rails on Ubuntu 18.04 Bionic Beaver</a></p>
+
+<p>Here is a full script: <a href="https://gist.github.com/vfreefly/77dc46d7d9ef3b0a6c17debfdfb73eb5">ruby_install.sh</a>:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+
+<span class="c"># check latest here https://www.ruby-lang.org/en/downloads/releases/</span>
+<span class="nv">RUBY_VERSION</span><span class="o">=</span>2.5.1
+
+logger<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
+  <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
+  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+<span class="o">}</span>
+
+ruby_compiling_dependencies_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing ruby build dependencies..."</span>
+  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+<span class="o">}</span>
+
+rbenv_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing rbenv..."</span>
+
+  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.rbenv
+  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+
+  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> &gt;&gt; ~/.bashrc
+
+  <span class="c"># export rbenv path for further ruby installation using rbenv</span>
+  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.rbenv/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="o">}</span>
+
+ruby_version_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing ruby </span><span class="k">${</span><span class="nv">RUBY_VERSION</span><span class="k">}</span><span class="s2">..."</span>
+
+  <span class="nb">export </span><span class="nv">CONFIGURE_OPTS</span><span class="o">=</span><span class="s2">"--disable-install-doc"</span>
+  rbenv install <span class="nv">$RUBY_VERSION</span>
+
+  logger <span class="s2">"Enabling ruby </span><span class="k">${</span><span class="nv">RUBY_VERSION</span><span class="k">}</span><span class="s2"> as global version..."</span>
+  rbenv global <span class="nv">$RUBY_VERSION</span>
+
+  rbenv rehash
+<span class="o">}</span>
+
+bundler_install<span class="o">()</span> <span class="o">{</span>
+  <span class="c"># gems config, disable downloading gems documentation</span>
+  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> &gt; ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
+
+  <span class="c"># install bundler</span>
+  logger <span class="s2">"Installing bundler..."</span>
+  rbenv <span class="nb">exec </span>gem install bundler
+
+  <span class="c"># bundler config, allow to install gems from insecure sources (git)</span>
+  rbenv <span class="nb">exec </span>bundle config --global git.allow_insecure <span class="nb">true</span>
+  <span class="c"># enable parallel gems installation (4 in parallel)</span>
+  rbenv <span class="nb">exec </span>bundle config --global <span class="nb">jobs </span>4
+<span class="o">}</span>
+
+main<span class="o">()</span> <span class="o">{</span>
+  ruby_compiling_dependencies_install
+  rbenv_install
+  ruby_version_install
+  bundler_install
+
+  logger <span class="s2">"All done! Don't forget to reload env variables in your terminal session: '</span><span class="se">\$</span><span class="s2"> exec </span><span class="se">\$</span><span class="s2">SHELL'"</span>
+<span class="o">}</span>
+
+main
+</code></pre>
+</div>
+
+<p><strong>Step by step:</strong></p>
+
+<p><code class="highlighter-rouge"><span class="c">#!/bin/bash</span></code> — at the beginning of the script there is <a href="https://en.wikipedia.org/wiki/Shebang_%28Unix%29">shebang</a>.</p>
+
+<p>Next there is logger function just for convenience, to control script execution process:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
+  <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
+  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>To compile and install ruby version, first we need to install all required packages:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ruby_compiling_dependencies_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing ruby build dependencies..."</span>
+  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Next we are going to install Rbenv, wrapping all required steps for this in the function <code class="highlighter-rouge">rbenv_install</code>:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>rbenv_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing rbenv..."</span>
+
+  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.rbenv
+  git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+
+  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> &gt;&gt; ~/.bashrc
+
+  <span class="c"># export rbenv path for further ruby installation using rbenv</span>
+  <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.rbenv/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>After successfully installing Rbenv, we can install Ruby itself:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ruby_version_install<span class="o">()</span> <span class="o">{</span>
+  logger <span class="s2">"Installing ruby </span><span class="k">${</span><span class="nv">RUBY_VERSION</span><span class="k">}</span><span class="s2">..."</span>
+
+  <span class="nb">export </span><span class="nv">CONFIGURE_OPTS</span><span class="o">=</span><span class="s2">"--disable-install-doc"</span>
+  rbenv install <span class="nv">$RUBY_VERSION</span>
+
+  logger <span class="s2">"Enabling ruby </span><span class="k">${</span><span class="nv">RUBY_VERSION</span><span class="k">}</span><span class="s2"> as global version..."</span>
+  rbenv global <span class="nv">$RUBY_VERSION</span>
+
+  rbenv rehash
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>Last step is to install Bundler gem, since it’s very common dependency manager in the Ruby world:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bundler_install<span class="o">()</span> <span class="o">{</span>
+  <span class="c"># gems config, disable downloading gems documentation</span>
+  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> &gt; ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
+
+  logger <span class="s2">"Installing bundler..."</span>
+  rbenv <span class="nb">exec </span>gem install bundler
+
+  <span class="c"># bundler config, allow to install gems from insecure sources (git)</span>
+  rbenv <span class="nb">exec </span>bundle config --global git.allow_insecure <span class="nb">true</span>
+  <span class="c"># enable parallel gems installation (4 in parallel)</span>
+  rbenv <span class="nb">exec </span>bundle config --global <span class="nb">jobs </span>4
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>After all functions declared, it’s good practice to wrap everything to the main function:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>main<span class="o">()</span> <span class="o">{</span>
+  ruby_compiling_dependencies_install
+  rbenv_install
+  ruby_version_install
+  bundler_install
+
+  logger <span class="s2">"All done! Don't forget to reload env variables in your terminal session: '</span><span class="se">\$</span><span class="s2"> exec </span><span class="se">\$</span><span class="s2">SHELL'"</span>
+<span class="o">}</span>
+</code></pre>
+</div>
+
+<p>And at the end call this main function:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>main
+</code></pre>
+</div>
+
+<p><br /></p>
+
+<p>All done! <strong>You can execute bash script</strong> using two ways:</p>
+<ul>
+  <li>First way is to execute script by passing path to the script to the bash interpreter: <code class="highlighter-rouge">$ bash ruby_install.sh</code>.</li>
+  <li>Second way is to make script executable first: <code class="highlighter-rouge">$ chmod +x ruby_install.sh</code> and then just call script: <code class="highlighter-rouge">$ ./ruby_install.sh</code>.</li>
+</ul>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Increase readability of your bash scripts using functions&p[summary]=You can find it very obvious, but there are tons of bash scripts out there written very badly.
+
+People often forget that Bash actually a ...&p[url]=https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions&text=You can find it very obvious, but there are tons of bash scripts out there written very badly.
+
+People often forget that Bash actually a ...&hashtags=linux,bash,devops,automation," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://victorafanasev.info/tag/linux">linux</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/bash">bash</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
+
+            </main>
+        </div>
+
+        <script src="https://victorafanasev.info/assets/js/jquery-1.12.2.min.js"></script>
+<script src="https://victorafanasev.info/assets/js/backtotop.js"></script>
+<script src="https://victorafanasev.info/assets/js/lunr.min.js"></script>
+<script src="https://victorafanasev.info/assets/js/lunr-feed.js"></script>
+<script src="https://victorafanasev.info/assets/js/jquery.fitvids.js"></script>
+<script src="https://victorafanasev.info/assets/js/svg4everybody.min.js"></script>
+<script src="https://victorafanasev.info/assets/js/scripts.js"></script>
+
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-XXXXXXX-2', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+    </body>
+</html>
