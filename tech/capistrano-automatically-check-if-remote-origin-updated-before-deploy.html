@@ -224,7 +224,9 @@
     <div class="post-content">
         <p>Sometimes I forget to push local commits to the remote repository before <code class="highlighter-rouge">$ bundle exec cap production deploy</code>.</p>
 
-<p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command. Just add following capistrano task to the <code class="highlighter-rouge">lib/capistrano/tasks/deploy_git_uptodate_check.rake</code> file:</p>
+<p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command. <!--more--></p>
+
+<p>Just add following capistrano task to the <code class="highlighter-rouge">lib/capistrano/tasks/deploy_git_uptodate_check.rake</code> file:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># lib/capistrano/tasks/deploy_git_uptodate_check.rake</span>
 
