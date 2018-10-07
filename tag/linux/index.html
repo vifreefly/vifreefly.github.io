@@ -277,14 +277,13 @@
 
 <p>Let’s check simple bash function which prints green string taken as an argument:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
   <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
   <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
 
-  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 
 

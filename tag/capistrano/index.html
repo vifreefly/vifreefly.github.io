@@ -229,7 +229,7 @@
 
 <p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command. Just add following capistrano task to the <code class="highlighter-rouge">lib/capistrano/tasks/deploy_git_uptodate_check.rake</code> file:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># lib/capistrano/tasks/deploy_git_uptodate_check.rake</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># lib/capistrano/tasks/deploy_git_uptodate_check.rake</span>
 
 <span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
   <span class="n">desc</span> <span class="s2">"Check if origin master synced with local repository before deploy"</span>
@@ -245,8 +245,7 @@
 <span class="k">end</span>
 
 <span class="n">before</span> <span class="s2">"deploy"</span><span class="p">,</span> <span class="s2">"deploy:git_uptodate_check"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>All is done!</p>
 

@@ -228,14 +228,13 @@
 
 <p>Let’s check simple bash function which prints green string taken as an argument:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
   <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
   <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
 
-  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <!--more-->
 
@@ -243,14 +242,13 @@
 
 <p>What’s interesting here it’s how functions take parameters/arguments. Simply, they don’t. You can’t specify arguments while declaring function, but it’s still possible to use passed arguments in function body calling them <code class="highlighter-rouge">$1</code> , <code class="highlighter-rouge">$2</code> , <code class="highlighter-rouge">$3</code> , etc:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>hello<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hello<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="s2">"Hello,"</span> <span class="nv">$1</span>
 <span class="o">}</span>
 
-<span class="gp">$ </span>hello world
+<span class="nv">$ </span>hello world
 <span class="c"># prints: Hello, world</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So thats how <code class="highlighter-rouge">logger()</code> function works.</p>
 
@@ -271,7 +269,7 @@
 
 <p>Here is a full script: <a href="https://gist.github.com/vfreefly/77dc46d7d9ef3b0a6c17debfdfb73eb5">ruby_install.sh</a>:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 
 <span class="c"># check latest here https://www.ruby-lang.org/en/downloads/releases/</span>
 <span class="nv">RUBY_VERSION</span><span class="o">=</span>2.5.1
@@ -279,24 +277,24 @@
 logger<span class="o">()</span> <span class="o">{</span>
   <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
   <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
-  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
 <span class="o">}</span>
 
 ruby_compiling_dependencies_install<span class="o">()</span> <span class="o">{</span>
   logger <span class="s2">"Installing ruby build dependencies..."</span>
-  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+  <span class="nb">sudo </span>apt install <span class="nt">-q</span> <span class="nt">-y</span> zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
 <span class="o">}</span>
 
 rbenv_install<span class="o">()</span> <span class="o">{</span>
   logger <span class="s2">"Installing rbenv..."</span>
 
-  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.rbenv
+  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm <span class="nt">-rf</span> ~/.rbenv
   git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
   git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 
 
-  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
-  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> &gt;&gt; ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> <span class="o">&gt;&gt;</span> ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> <span class="o">&gt;&gt;</span> ~/.bashrc
 
   <span class="c"># export rbenv path for further ruby installation using rbenv</span>
   <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.rbenv/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
@@ -316,16 +314,16 @@ ruby_version_install<span class="o">()</span> <span class="o">{</span>
 
 bundler_install<span class="o">()</span> <span class="o">{</span>
   <span class="c"># gems config, disable downloading gems documentation</span>
-  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> &gt; ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
+  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> <span class="o">&gt;</span> ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
 
   <span class="c"># install bundler</span>
   logger <span class="s2">"Installing bundler..."</span>
   rbenv <span class="nb">exec </span>gem install bundler
 
   <span class="c"># bundler config, allow to install gems from insecure sources (git)</span>
-  rbenv <span class="nb">exec </span>bundle config --global git.allow_insecure <span class="nb">true</span>
+  rbenv <span class="nb">exec </span>bundle config <span class="nt">--global</span> git.allow_insecure <span class="nb">true</span>
   <span class="c"># enable parallel gems installation (4 in parallel)</span>
-  rbenv <span class="nb">exec </span>bundle config --global <span class="nb">jobs </span>4
+  rbenv <span class="nb">exec </span>bundle config <span class="nt">--global</span> <span class="nb">jobs </span>4
 <span class="o">}</span>
 
 main<span class="o">()</span> <span class="o">{</span>
@@ -338,8 +336,7 @@ main<span class="o">()</span> <span class="o">{</span>
 <span class="o">}</span>
 
 main
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><strong>Step by step:</strong></p>
 
@@ -347,44 +344,41 @@ main
 
 <p>Next there is logger function just for convenience, to control script execution process:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
   <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
   <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
-  <span class="nb">echo</span> -e <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
+  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>To compile and install ruby version, first we need to install all required packages:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ruby_compiling_dependencies_install<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ruby_compiling_dependencies_install<span class="o">()</span> <span class="o">{</span>
   logger <span class="s2">"Installing ruby build dependencies..."</span>
-  sudo apt install -q -y zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
+  <span class="nb">sudo </span>apt install <span class="nt">-q</span> <span class="nt">-y</span> zlib1g-dev build-essential libssl-dev libreadline-dev libreadline6-dev libyaml-dev libxml2-dev libxslt1-dev libcurl4-openssl-dev libffi-dev
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Next we are going to install Rbenv, wrapping all required steps for this in the function <code class="highlighter-rouge">rbenv_install</code>:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>rbenv_install<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rbenv_install<span class="o">()</span> <span class="o">{</span>
   logger <span class="s2">"Installing rbenv..."</span>
 
-  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm -rf ~/.rbenv
+  <span class="nb">cd</span> <span class="o">&amp;&amp;</span> rm <span class="nt">-rf</span> ~/.rbenv
   git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
   git clone https://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 
-  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
-  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> &gt;&gt; ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'export PATH="$HOME/.rbenv/bin:$PATH"'</span> <span class="o">&gt;&gt;</span> ~/.bashrc
+  <span class="nb">echo</span> <span class="s1">'eval "$(rbenv init -)"'</span> <span class="o">&gt;&gt;</span> ~/.bashrc
 
   <span class="c"># export rbenv path for further ruby installation using rbenv</span>
   <span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/.rbenv/bin:</span><span class="nv">$PATH</span><span class="s2">"</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>After successfully installing Rbenv, we can install Ruby itself:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>ruby_version_install<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ruby_version_install<span class="o">()</span> <span class="o">{</span>
   logger <span class="s2">"Installing ruby </span><span class="k">${</span><span class="nv">RUBY_VERSION</span><span class="k">}</span><span class="s2">..."</span>
 
   <span class="nb">export </span><span class="nv">CONFIGURE_OPTS</span><span class="o">=</span><span class="s2">"--disable-install-doc"</span>
@@ -395,29 +389,27 @@ main
 
   rbenv rehash
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Last step is to install Bundler gem, since it’s very common dependency manager in the Ruby world:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>bundler_install<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bundler_install<span class="o">()</span> <span class="o">{</span>
   <span class="c"># gems config, disable downloading gems documentation</span>
-  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> &gt; ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
+  <span class="nb">echo</span> <span class="s2">"gem: --no-ri --no-rdoc"</span> <span class="o">&gt;</span> ~/.gemrc <span class="o">&amp;&amp;</span> chmod 644 ~/.gemrc
 
   logger <span class="s2">"Installing bundler..."</span>
   rbenv <span class="nb">exec </span>gem install bundler
 
   <span class="c"># bundler config, allow to install gems from insecure sources (git)</span>
-  rbenv <span class="nb">exec </span>bundle config --global git.allow_insecure <span class="nb">true</span>
+  rbenv <span class="nb">exec </span>bundle config <span class="nt">--global</span> git.allow_insecure <span class="nb">true</span>
   <span class="c"># enable parallel gems installation (4 in parallel)</span>
-  rbenv <span class="nb">exec </span>bundle config --global <span class="nb">jobs </span>4
+  rbenv <span class="nb">exec </span>bundle config <span class="nt">--global</span> <span class="nb">jobs </span>4
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>After all functions declared, it’s good practice to wrap everything to the main function:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>main<span class="o">()</span> <span class="o">{</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main<span class="o">()</span> <span class="o">{</span>
   ruby_compiling_dependencies_install
   rbenv_install
   ruby_version_install
@@ -425,14 +417,12 @@ main
 
   logger <span class="s2">"All done! Don't forget to reload env variables in your terminal session: '</span><span class="se">\$</span><span class="s2"> exec </span><span class="se">\$</span><span class="s2">SHELL'"</span>
 <span class="o">}</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And at the end call this main function:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code>main
-</code></pre>
-</div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main
+</code></pre></div></div>
 
 <p><br /></p>
 

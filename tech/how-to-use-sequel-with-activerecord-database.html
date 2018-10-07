@@ -228,14 +228,13 @@
 
 <!--more-->
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pg'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">gem</span> <span class="s1">'pg'</span>
 <span class="n">gem</span> <span class="s1">'sequel'</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>2) Create module <code class="highlighter-rouge">DB</code> which contains AR models which you want to query. Sequel models have very similar syntax like ActiveRecord:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'pg'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'pg'</span>
 <span class="nb">require</span> <span class="s1">'sequel'</span>
 
 <span class="no">Sequel</span><span class="p">.</span><span class="nf">default_timezone</span> <span class="o">=</span> <span class="ss">:utc</span>
@@ -253,32 +252,28 @@
     <span class="n">one_to_many</span> <span class="ss">:products</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p><br /></p>
 
 <p>This is it. <strong>Lets dig into details:</strong></p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Sequel</span><span class="p">.</span><span class="nf">default_timezone</span> <span class="o">=</span> <span class="ss">:utc</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Sequel</span><span class="p">.</span><span class="nf">default_timezone</span> <span class="o">=</span> <span class="ss">:utc</span>
+</code></pre></div></div>
 
 <p>Rails stores all dates in database using UTC format, where Sequel uses local time. We have to tell Sequel to use UTC instead.</p>
 
 <p><br /></p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">URL</span> <span class="o">=</span> <span class="no">Sequel</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="s2">"postgres://user:password@localhost/database_name"</span><span class="p">)</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">URL</span> <span class="o">=</span> <span class="no">Sequel</span><span class="p">.</span><span class="nf">connect</span><span class="p">(</span><span class="s2">"postgres://user:password@localhost/database_name"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>This is a <code class="highlighter-rouge">DATABASE_URL</code>, format same as in Active Record. It is a good idea to put this string to <code class="highlighter-rouge">.env</code> file using Dotenv and then: <code class="highlighter-rouge">URL = Sequel.connect(ENV["DATABASE_URL"])</code>.</p>
 
 <p><br /></p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">plugin</span> <span class="ss">:timestamps</span><span class="p">,</span> <span class="ss">update_on_create: </span><span class="kp">true</span>
-</code></pre>
-</div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plugin</span> <span class="ss">:timestamps</span><span class="p">,</span> <span class="ss">update_on_create: </span><span class="kp">true</span>
+</code></pre></div></div>
 
 <p>If you want to create or update models as well, timestamps plugin will handle <code class="highlighter-rouge">created_at</code> and <code class="highlighter-rouge">updated_at</code> exact the same way as ActiveRecord.</p>
 
@@ -290,11 +285,10 @@
 
 <p>And now you have everything to start:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="n">product</span> <span class="o">=</span> <span class="no">DB</span><span class="o">::</span><span class="no">Product</span><span class="p">.</span><span class="nf">first</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">product</span> <span class="o">=</span> <span class="no">DB</span><span class="o">::</span><span class="no">Product</span><span class="p">.</span><span class="nf">first</span>
 <span class="n">product</span><span class="p">.</span><span class="nf">brand</span>
 <span class="c1"># etc.</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>There is full <strong>Sequel documentation</strong> <a href="http://sequel.jeremyevans.net/documentation.html">http://sequel.jeremyevans.net/documentation.html</a>.</p>
 
@@ -302,11 +296,10 @@
 
 <p>Also, Sequel works with threads a bit simpler than ActiveRecord. If you ever tried to query AR inside threads, you know that connection pool can easy exceed and AR will raise an exception. That’s why in such cases all code which works with AR inside of threads should be wrapped to</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection_pool</span><span class="p">.</span><span class="nf">with_connection</span> <span class="k">do</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="p">.</span><span class="nf">connection_pool</span><span class="p">.</span><span class="nf">with_connection</span> <span class="k">do</span>
   <span class="c1"># Do stuff</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>block.</p>
 

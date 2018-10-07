@@ -236,7 +236,7 @@
 
 <p>It’s easy to implement using <code class="highlighter-rouge">pre-push</code> git hook:</p>
 
-<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
 <span class="c"># copy this to `.git/hooks/pre-push` hook file and make it executable: `$ chmod +x pre-push`</span>
 
 <span class="nb">echo</span> <span class="s2">"&gt; Hook started"</span>
@@ -248,24 +248,23 @@ bundle <span class="nb">exec </span>jekyll build
 <span class="nb">cd </span>_site
 
 <span class="c"># Init a new git repo inside `_site/` if it doesn't exists</span>
-<span class="k">if</span> <span class="o">[</span> ! -d <span class="s2">".git"</span> <span class="o">]</span>; <span class="k">then
+<span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="s2">".git"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
   </span>git init
 <span class="k">fi
 
-if</span> <span class="o">[[</span> ! <span class="k">$(</span>git remote<span class="k">)</span> <span class="o">]]</span>; <span class="k">then</span>
+if</span> <span class="o">[[</span> <span class="o">!</span> <span class="k">$(</span>git remote<span class="k">)</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   <span class="c"># Add your github-pages repo (example https://github.com/vifreefly/vifreefly.github.io.git)</span>
   <span class="c"># as origin for `_site` if it's not added yet:</span>
   git remote add origin https://github.com/vifreefly/vifreefly.github.io.git
   <span class="c"># and push build to the github-pages repo with --force</span>
-  git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"Build"</span> <span class="o">&amp;&amp;</span> git push -u -f origin master
+  git add <span class="nb">.</span> <span class="o">&amp;&amp;</span> git commit <span class="nt">-m</span> <span class="s2">"Build"</span> <span class="o">&amp;&amp;</span> git push <span class="nt">-u</span> <span class="nt">-f</span> origin master
 <span class="k">else</span>
   <span class="c"># Push build to the github-pages repo with --force</span>
-  git add . <span class="o">&amp;&amp;</span> git commit -m <span class="s2">"Build"</span> <span class="o">&amp;&amp;</span> git push -f origin master
+  git add <span class="nb">.</span> <span class="o">&amp;&amp;</span> git commit <span class="nt">-m</span> <span class="s2">"Build"</span> <span class="o">&amp;&amp;</span> git push <span class="nt">-f</span> origin master
 <span class="k">fi
 
 </span><span class="nb">echo</span> <span class="s2">"&lt; Hook finished"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>With this hook, when I’m doing <code class="highlighter-rouge">$ git push origin master</code> at Jekyll <code class="highlighter-rouge">blog</code> repository, a <strong>new build of a website pushes to Github Pages as well.</strong></p>
 

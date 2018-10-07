@@ -224,11 +224,10 @@
     <div class="post-content">
         <p>For my own gems, I want to have a configuration block, which usually looks like this:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">some_config</span> <span class="o">=</span> <span class="s2">"foobarbaz"</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <!--more-->
 
@@ -247,7 +246,7 @@
 
 <p>Yes, it can:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Yourgem</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Yourgem</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span>
     <span class="vi">@configuration</span> <span class="o">||=</span> <span class="p">{}</span>
   <span class="k">end</span>
@@ -256,23 +255,21 @@
     <span class="k">yield</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And now:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="p">[</span><span class="ss">:some_config</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"foobarbaz"</span>
 <span class="k">end</span>
 
 <span class="no">Yourgem</span><span class="p">.</span><span class="nf">configuration</span> <span class="c1"># =&gt; { :some_config =&gt; "foobarbaz" }</span>
 <span class="no">Yourgem</span><span class="p">.</span><span class="nf">configuration</span><span class="p">[</span><span class="ss">:some_config</span><span class="p">]</span> <span class="c1">#=&gt; "foobarbaz"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Looks clean and simple, but there is one restriction: instead of classy <code class="highlighter-rouge">Yourgem.configuration.some_config</code> we have to act with it like with hash (because configuration value it’s a hash): <code class="highlighter-rouge">Yourgem.configuration[:some_config]</code>. To solve this problem, we’ll use Ruby’s built-in <a href="https://ruby-doc.org/stdlib-2.0.0/libdoc/ostruct/rdoc/OpenStruct.html">OpenStruct</a>:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'ostruct'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'ostruct'</span>
 
 <span class="k">module</span> <span class="nn">Yourgem</span>
   <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span>
@@ -283,19 +280,17 @@
     <span class="k">yield</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>And now:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
   <span class="n">config</span><span class="p">.</span><span class="nf">some_config</span> <span class="o">=</span> <span class="s2">"foobarbaz"</span>
 <span class="k">end</span>
 
 <span class="no">Yourgem</span><span class="p">.</span><span class="nf">configuration</span> <span class="c1"># =&gt; #&lt;OpenStruct some_config="foobarbaz"&gt;</span>
 <span class="no">Yourgem</span><span class="p">.</span><span class="nf">configuration</span><span class="p">.</span><span class="nf">some_config</span> <span class="c1">#=&gt; "foobarbaz"</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Clean and simple.</p>
 

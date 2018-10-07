@@ -231,13 +231,12 @@
 
 <p>First add to the Gemfile <code class="highlighter-rouge">pagy</code> gem:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>gem 'pagy'
-</code></pre>
-</div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem 'pagy'
+</code></pre></div></div>
 
 <p>app.rb:</p>
 
-<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'sinatra/base'</span>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">require</span> <span class="s1">'sinatra/base'</span>
 <span class="nb">require</span> <span class="s1">'pagy'</span>
 <span class="nb">require</span> <span class="s1">'pagy/extras/bootstrap'</span>
 
@@ -264,12 +263,11 @@
     <span class="p">}</span>
   <span class="k">end</span>
 <span class="k">end</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>views/posts/index.erb <em>(Also don’t forget to include views/layout.erb)</em></p>
 
-<div class="language-erb highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+<div class="language-erb highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-lg-12"</span><span class="nt">&gt;</span>
     <span class="nt">&lt;h1&gt;</span>All Posts<span class="nt">&lt;/h1&gt;</span>
 
@@ -281,8 +279,7 @@
     <span class="cp">&lt;%=</span> <span class="n">pagy_nav_bootstrap</span><span class="p">(</span><span class="vi">@pagy</span><span class="p">)</span> <span class="k">if</span> <span class="vi">@pagy</span><span class="p">.</span><span class="nf">pages</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="cp">%&gt;</span>
   <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;/div&gt;</span>
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>Where:</p>
 
