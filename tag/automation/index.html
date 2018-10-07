@@ -171,6 +171,10 @@
             
                 
             
+                
+            
+                
+            
         </div>
         
     
@@ -202,6 +206,100 @@
 
                 <h1>Posts Tagged - automation</h1>
 
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+            <header class="post-header">
+                <ul class="clear">
+                    <li><time datetime="2018-10-07T11:00:00+04:00" itemprop="datePublished">7 Oct, 2018</time></li>
+                    
+                    <li class="cats">
+                        
+                            <a href="/categories/tech/">tech</a>
+                        
+                    </li>
+                    
+                </ul>
+                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy">Capistrano: automatically check if remote origin updated before deploy</a></h2>
+            </header>
+
+            <div class="post-content">
+                <p>Sometimes I forget to push local commits to the remote repository before <code class="highlighter-rouge">$ bundle exec cap production deploy</code>.</p>
+
+<p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command. Just add following capistrano task to the <code class="highlighter-rouge">lib/capistrano/tasks/deploy_git_uptodate_check.rake</code> file:</p>
+
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># lib/capistrano/tasks/deploy_git_uptodate_check.rake</span>
+
+<span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
+  <span class="n">desc</span> <span class="s2">"Check if origin master synced with local repository before deploy"</span>
+  <span class="n">task</span> <span class="ss">:git_uptodate_check</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">!</span><span class="sb">`git status --short`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please commit your changes first"</span>
+    <span class="k">elsif</span> <span class="sb">`git remote`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please add remote origin repository to your repo first"</span>
+    <span class="k">elsif</span> <span class="o">!</span><span class="sb">`git rev-list master...origin/master`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please push your commits to the remote origin repo first"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">before</span> <span class="s2">"deploy"</span><span class="p">,</span> <span class="s2">"deploy:git_uptodate_check"</span>
+</code></pre>
+</div>
+
+<p>All is done!</p>
+
+
+                
+                    <p><a href="/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" role="button">Read More</a></p>
+                
+            </div>
+
+            <footer class="post-footer">
+                <div class="share">Share
+                    <ul class="social-networks">
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Capistrano: automatically check if remote origin updated before deploy&p[summary]=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+
+It is possible to check th...&p[url]=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy&text=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+
+It is possible to check th...&hashtags=capistrano,rails,git,ruby,automation,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                    </ul>
+                </div>
+                
+                <div class="tags">
+                    <ul>
+                        
+                        <li><a href="https://victorafanasev.info/tag/capistrano">capistrano</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/rails">rails</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/git">git</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </footer>
+        </article>
+        
+    
+        
+    
 
     
         

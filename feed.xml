@@ -5,9 +5,57 @@
     <description>Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Oct 2018 11:56:41 +0400</pubDate>
-    <lastBuildDate>Thu, 04 Oct 2018 11:56:41 +0400</lastBuildDate>
+    <pubDate>Sun, 07 Oct 2018 11:57:12 +0400</pubDate>
+    <lastBuildDate>Sun, 07 Oct 2018 11:57:12 +0400</lastBuildDate>
     <generator>Jekyll v3.2.1</generator>
+    
+      <item>
+        <title>Capistrano: automatically check if remote origin updated before deploy</title>
+        <description>&lt;p&gt;Sometimes I forget to push local commits to the remote repository before &lt;code class=&quot;highlighter-rouge&quot;&gt;$ bundle exec cap production deploy&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is possible to check the &lt;code class=&quot;highlighter-rouge&quot;&gt;git status&lt;/code&gt; before command, and if there are uncommited and/or unpushed changes, abort the deploy command. Just add following capistrano task to the &lt;code class=&quot;highlighter-rouge&quot;&gt;lib/capistrano/tasks/deploy_git_uptodate_check.rake&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# lib/capistrano/tasks/deploy_git_uptodate_check.rake&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;namespace&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:deploy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;desc&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Check if origin master synced with local repository before deploy&quot;&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;ss&quot;&gt;:git_uptodate_check&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`git status --short`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;empty?&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Please commit your changes first&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elsif&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`git remote`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;empty?&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Please add remote origin repository to your repo first&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;elsif&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`git rev-list master...origin/master`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;empty?&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;raise&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Please push your commits to the remote origin repo first&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;before&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deploy&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;deploy:git_uptodate_check&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;All is done!&lt;/p&gt;
+</description>
+        <pubDate>Sun, 07 Oct 2018 11:00:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy</guid>
+        
+        <category>capistrano</category>
+        
+        <category>rails</category>
+        
+        <category>git</category>
+        
+        <category>ruby</category>
+        
+        <category>automation</category>
+        
+        <category>devops</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
     
       <item>
         <title>Deploy Jekyll build to Github Pages using Git pre-push hook</title>

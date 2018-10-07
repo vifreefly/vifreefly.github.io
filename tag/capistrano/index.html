@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - postgres | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer </title>
-    <meta property="og:title" content="Posts Tagged - postgres | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
-    <meta name="twitter:title" content="Posts Tagged - postgres | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+    <title>Posts Tagged - capistrano | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer </title>
+    <meta property="og:title" content="Posts Tagged - capistrano | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+    <meta name="twitter:title" content="Posts Tagged - capistrano | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
 
     <meta name="description" content="Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation">
     <meta name="description" property="og:description" content="Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation" />
@@ -17,7 +17,7 @@
     
     <meta name="twitter:site" content="@vfreefl" />
     
-    <meta property="og:url" content="https://victorafanasev.info/tag/postgres/" />
+    <meta property="og:url" content="https://victorafanasev.info/tag/capistrano/" />
 
     <meta property="og:image" content="" />
     <meta name="twitter:image" content="" />
@@ -96,7 +96,7 @@
     
     <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
 
-    <link rel="canonical" href="https://victorafanasev.info/tag/postgres/">
+    <link rel="canonical" href="https://victorafanasev.info/tag/capistrano/">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
 </head>
@@ -204,53 +204,15 @@
 </div>
 
 
-                <h1>Posts Tagged - postgres</h1>
+                <h1>Posts Tagged - capistrano</h1>
 
 
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
     
         
         <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
             <header class="post-header">
                 <ul class="clear">
-                    <li><time datetime="2018-07-13T12:01:00+04:00" itemprop="datePublished">13 Jul, 2018</time></li>
+                    <li><time datetime="2018-10-07T11:00:00+04:00" itemprop="datePublished">7 Oct, 2018</time></li>
                     
                     <li class="cats">
                         
@@ -259,47 +221,111 @@
                     </li>
                     
                 </ul>
-                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database">How to use Sequel with ActiveRecord database</a></h2>
+                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy">Capistrano: automatically check if remote origin updated before deploy</a></h2>
             </header>
 
             <div class="post-content">
-                <p>Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight <a href="https://github.com/jeremyevans/sequel">Sequel</a> can handle this job pretty well. <strong>Check the guide <a href="http://sequel.jeremyevans.net/rdoc/files/doc/querying_rdoc.html">Querying in Sequel</a></strong> to understand basics.</p>
+                <p>Sometimes I forget to push local commits to the remote repository before <code class="highlighter-rouge">$ bundle exec cap production deploy</code>.</p>
 
-<p>1) Add to Gemfile gems pg and sequel:</p>
+<p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command. Just add following capistrano task to the <code class="highlighter-rouge">lib/capistrano/tasks/deploy_git_uptodate_check.rake</code> file:</p>
 
+<div class="language-ruby highlighter-rouge"><pre class="highlight"><code><span class="c1"># lib/capistrano/tasks/deploy_git_uptodate_check.rake</span>
+
+<span class="n">namespace</span> <span class="ss">:deploy</span> <span class="k">do</span>
+  <span class="n">desc</span> <span class="s2">"Check if origin master synced with local repository before deploy"</span>
+  <span class="n">task</span> <span class="ss">:git_uptodate_check</span> <span class="k">do</span>
+    <span class="k">if</span> <span class="o">!</span><span class="sb">`git status --short`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please commit your changes first"</span>
+    <span class="k">elsif</span> <span class="sb">`git remote`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please add remote origin repository to your repo first"</span>
+    <span class="k">elsif</span> <span class="o">!</span><span class="sb">`git rev-list master...origin/master`</span><span class="p">.</span><span class="nf">empty?</span>
+      <span class="k">raise</span> <span class="s2">"Please push your commits to the remote origin repo first"</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">before</span> <span class="s2">"deploy"</span><span class="p">,</span> <span class="s2">"deploy:git_uptodate_check"</span>
+</code></pre>
+</div>
+
+<p>All is done!</p>
 
 
                 
-                    <p><a href="/tech/how-to-use-sequel-with-activerecord-database" role="button">Read More</a></p>
+                    <p><a href="/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" role="button">Read More</a></p>
                 
             </div>
 
             <footer class="post-footer">
                 <div class="share">Share
                     <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=How to use Sequel with ActiveRecord database&p[summary]=Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight Sequel can han...&p[url]=https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database&text=Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight Sequel can han...&hashtags=ruby,sequel,postgres,RoR,ActiveRecord," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Capistrano: automatically check if remote origin updated before deploy&p[summary]=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+
+It is possible to check th...&p[url]=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy&text=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+
+It is possible to check th...&hashtags=capistrano,rails,git,ruby,automation,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
                     </ul>
                 </div>
                 
                 <div class="tags">
                     <ul>
                         
+                        <li><a href="https://victorafanasev.info/tag/capistrano">capistrano</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/rails">rails</a></li>
+                        
+                        <li><a href="https://victorafanasev.info/tag/git">git</a></li>
+                        
                         <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/sequel">sequel</a></li>
+                        <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/postgres">postgres</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/RoR">RoR</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/ActiveRecord">ActiveRecord</a></li>
+                        <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
                         
                     </ul>
                 </div>
                 
             </footer>
         </article>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
         
     
         
