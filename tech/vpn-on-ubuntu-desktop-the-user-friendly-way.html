@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - ActiveRecord | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer </title>
-    <meta property="og:title" content="Posts Tagged - ActiveRecord | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
-    <meta name="twitter:title" content="Posts Tagged - ActiveRecord | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+    <title>VPN on Ubuntu Desktop: the user-friendly way | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer </title>
+    <meta property="og:title" content="VPN on Ubuntu Desktop: the user-friendly way | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
+    <meta name="twitter:title" content="VPN on Ubuntu Desktop: the user-friendly way | Blog | Victor Afanasev &mdash; Ruby/ROR backend developer " />
 
     <meta name="description" content="Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation">
     <meta name="description" property="og:description" content="Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation" />
@@ -17,7 +17,7 @@
     
     <meta name="twitter:site" content="@vfreefl" />
     
-    <meta property="og:url" content="https://victorafanasev.info/tag/ActiveRecord/" />
+    <meta property="og:url" content="https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way" />
 
     <meta property="og:image" content="" />
     <meta name="twitter:image" content="" />
@@ -96,7 +96,7 @@
     
     <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
 
-    <link rel="canonical" href="https://victorafanasev.info/tag/ActiveRecord/">
+    <link rel="canonical" href="https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
 </head>
@@ -208,149 +208,118 @@
 </div>
 
 
-                <h1>Posts Tagged - ActiveRecord</h1>
-
-
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-        <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-            <header class="post-header">
-                <ul class="clear">
-                    <li><time datetime="2018-07-13T12:01:00+04:00" itemprop="datePublished">13 Jul, 2018</time></li>
+                <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul class="clear">
+            <li><time datetime="2018-11-13T16:00:00+04:00" itemprop="datePublished">13 Nov, 2018</time></li>
+            
+                
+                <li class="cats">
                     
-                    <li class="cats">
-                        
-                            <a href="/categories/tech/">tech</a>
-                        
-                    </li>
+                        <a href="/categories/tech/">tech</a>
                     
-                </ul>
-                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database">How to use Sequel with ActiveRecord database</a></h2>
-            </header>
-
-            <div class="post-content">
-                <p>Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight <a href="https://github.com/jeremyevans/sequel">Sequel</a> can handle this job pretty well. <strong>Check the guide <a href="http://sequel.jeremyevans.net/rdoc/files/doc/querying_rdoc.html">Querying in Sequel</a></strong> to understand basics.</p>
-
-<p>1) Add to Gemfile gems pg and sequel:</p>
-
-
-
+                </li>
                 
-                    <p><a href="/tech/how-to-use-sequel-with-activerecord-database" role="button">Read More</a></p>
+            
+        </ul>
+        <h2 itemprop="name headline">VPN on Ubuntu Desktop: the user-friendly way</h2>
+    </header>
+
+    <div class="post-content">
+        <p>What is better: VPN provider or own private VPN, based on VPS server? Even if it’s not a problem for you to manually setup the server (buy VPS and install/configure OpenVPN there), almost every VPN provider has <strong>multiple IP locations feature</strong>. In one click you can switch your location from USA/New York to Europe/Amsterdam and so on. In case of your own VPN, IP is always the same.</p>
+
+<p>The sad thing is that many of VPN providers don’t have a client for Linux. Here are who does:</p>
+
+<ul>
+  <li>Nord VPN (<a href="https://nordvpn.com/download/linux/">CLI</a>, <a href="https://nordvpn.com/tutorials/linux/openvpn/">OpenVPN</a>)</li>
+  <li>Tunnel Bear (<a href="https://www.tunnelbear.com/blog/linux_support/">OpenVPN</a> support)</li>
+  <li><em>Know someone else? Please tell in comments below</em></li>
+</ul>
+
+<p>Right after <a href="https://www.tunnelbear.com/account#/signup">easy registration</a> (you have to provide only account email and password, credit card in not required) Tunnel Bear gives you 512 mb for free.</p>
+
+<p>Let’s use it and see <strong>how to setup VPN on Ubuntu Desktop</strong> (18.04-18.10) in a few, user-friendly steps: <!--more--></p>
+
+<ol>
+  <li>
+    <p>Download Tunnel Bear configuration files from here <a href="https://s3.amazonaws.com/tunnelbear/linux/openvpn.zip">https://s3.amazonaws.com/tunnelbear/linux/openvpn.zip</a></p>
+  </li>
+  <li>
+    <p>Unzip <code class="highlighter-rouge">openvpn.zip</code> archive: Right click &gt; <code class="highlighter-rouge">Extract Here</code></p>
+  </li>
+  <li>
+    <p>Go to <code class="highlighter-rouge">Settings</code> &gt; <code class="highlighter-rouge">Network</code> &gt; <code class="highlighter-rouge">VPN +</code>, and select <code class="highlighter-rouge">Import from file...</code></p>
+  </li>
+</ol>
+
+<p><img src="https://i.imgur.com/nnsmYvW.png" alt="" /></p>
+
+<ol>
+  <li>Go to folder with configuration files and select one of them on your choice:</li>
+</ol>
+
+<p><img src="https://i.imgur.com/eXzj3br.png" alt="" /></p>
+
+<ol>
+  <li>
+    <p>Fill in your Tunnel Bear credentials to <code class="highlighter-rouge">User name</code> (account email) and <code class="highlighter-rouge">Password</code> (account password) fields and click <code class="highlighter-rouge">Add</code></p>
+  </li>
+  <li>
+    <p>Now you can connect to a VPN from topbar menu:</p>
+  </li>
+</ol>
+
+<p><img src="https://i.imgur.com/NlzArtG.png" alt="" /></p>
+
+<p>If all is fine, you will see VPN icon:</p>
+
+<p><img src="https://i.imgur.com/zagGor9.png" alt="drawing" style="width:154px;" /></p>
+
+<p>All done! You can add multiple VPN locations and switch between them from topbar or Network settings:</p>
+
+<p><img src="https://i.imgur.com/w2PHb9j.png" alt="" /></p>
+
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=VPN on Ubuntu Desktop: the user-friendly way&p[summary]=What is better: VPN provider or own private VPN, based on VPS server? Even if it’s not a problem for you to manually setup the server (bu...&p[url]=https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way&text=What is better: VPN provider or own private VPN, based on VPS server? Even if it’s not a problem for you to manually setup the server (bu...&hashtags=ubuntu-desktop,vpn," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
                 
-            </div>
-
-            <footer class="post-footer">
-                <div class="share">Share
-                    <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=How to use Sequel with ActiveRecord database&p[summary]=Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight Sequel can han...&p[url]=https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/how-to-use-sequel-with-activerecord-database&text=Sometimes we want to query rails database outside of a rails app. But should you always bring AR for this? No, lightweight Sequel can han...&hashtags=ruby,sequel,postgres,RoR,ActiveRecord," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-                    </ul>
-                </div>
+                <li><a href="https://victorafanasev.info/tag/ubuntu-desktop">ubuntu-desktop</a></li>
                 
-                <div class="tags">
-                    <ul>
-                        
-                        <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/sequel">sequel</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/postgres">postgres</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/RoR">RoR</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/ActiveRecord">ActiveRecord</a></li>
-                        
-                    </ul>
-                </div>
+                <li><a href="https://victorafanasev.info/tag/vpn">vpn</a></li>
                 
-            </footer>
-        </article>
+            </ul>
+        </div>
         
-    
+    </footer>
+</article>
 
-    
-        
-    
-        
-    
-        
-    
-        
-    
 
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
+<aside class="comments" role="complementary">
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function () {
+            this.page.url = 'https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way';
+            this.page.identifier = '11/13/2018';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');
 
-    
-        
-    
-        
-    
+            s.src = '//blog-victor-afanasev.disqus.com/embed.js';
 
-    
-        
-    
-        
-    
-
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+</aside>
 
 
             </main>

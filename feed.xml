@@ -5,9 +5,77 @@
     <description>Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 11 Nov 2018 19:21:57 +0400</pubDate>
-    <lastBuildDate>Sun, 11 Nov 2018 19:21:57 +0400</lastBuildDate>
+    <pubDate>Tue, 13 Nov 2018 18:22:14 +0400</pubDate>
+    <lastBuildDate>Tue, 13 Nov 2018 18:22:14 +0400</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
+    
+      <item>
+        <title>VPN on Ubuntu Desktop: the user-friendly way</title>
+        <description>&lt;p&gt;What is better: VPN provider or own private VPN, based on VPS server? Even if it’s not a problem for you to manually setup the server (buy VPS and install/configure OpenVPN there), almost every VPN provider has &lt;strong&gt;multiple IP locations feature&lt;/strong&gt;. In one click you can switch your location from USA/New York to Europe/Amsterdam and so on. In case of your own VPN, IP is always the same.&lt;/p&gt;
+
+&lt;p&gt;The sad thing is that many of VPN providers don’t have a client for Linux. Here are who does:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Nord VPN (&lt;a href=&quot;https://nordvpn.com/download/linux/&quot;&gt;CLI&lt;/a&gt;, &lt;a href=&quot;https://nordvpn.com/tutorials/linux/openvpn/&quot;&gt;OpenVPN&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Tunnel Bear (&lt;a href=&quot;https://www.tunnelbear.com/blog/linux_support/&quot;&gt;OpenVPN&lt;/a&gt; support)&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Know someone else? Please tell in comments below&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Right after &lt;a href=&quot;https://www.tunnelbear.com/account#/signup&quot;&gt;easy registration&lt;/a&gt; (you have to provide only account email and password, credit card in not required) Tunnel Bear gives you 512 mb for free.&lt;/p&gt;
+
+&lt;p&gt;Let’s use it and see &lt;strong&gt;how to setup VPN on Ubuntu Desktop&lt;/strong&gt; (18.04-18.10) in a few, user-friendly steps: &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download Tunnel Bear configuration files from here &lt;a href=&quot;https://s3.amazonaws.com/tunnelbear/linux/openvpn.zip&quot;&gt;https://s3.amazonaws.com/tunnelbear/linux/openvpn.zip&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Unzip &lt;code class=&quot;highlighter-rouge&quot;&gt;openvpn.zip&lt;/code&gt; archive: Right click &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Extract Here&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Go to &lt;code class=&quot;highlighter-rouge&quot;&gt;Settings&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Network&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;VPN +&lt;/code&gt;, and select &lt;code class=&quot;highlighter-rouge&quot;&gt;Import from file...&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/nnsmYvW.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Go to folder with configuration files and select one of them on your choice:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/eXzj3br.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Fill in your Tunnel Bear credentials to &lt;code class=&quot;highlighter-rouge&quot;&gt;User name&lt;/code&gt; (account email) and &lt;code class=&quot;highlighter-rouge&quot;&gt;Password&lt;/code&gt; (account password) fields and click &lt;code class=&quot;highlighter-rouge&quot;&gt;Add&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Now you can connect to a VPN from topbar menu:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/NlzArtG.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If all is fine, you will see VPN icon:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/zagGor9.png&quot; alt=&quot;drawing&quot; style=&quot;width:154px;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;All done! You can add multiple VPN locations and switch between them from topbar or Network settings:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://i.imgur.com/w2PHb9j.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 13 Nov 2018 16:00:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/vpn-on-ubuntu-desktop-the-user-friendly-way</guid>
+        
+        <category>ubuntu-desktop</category>
+        
+        <category>vpn</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
     
       <item>
         <title>Capistrano: automatically check if remote origin updated before deploy</title>
