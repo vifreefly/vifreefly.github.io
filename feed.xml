@@ -5,20 +5,22 @@
     <description>Ruby is my ❤️. DevOps. Doing consulting in web scraping and web automation</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 13 Nov 2018 21:10:49 +0400</pubDate>
-    <lastBuildDate>Tue, 13 Nov 2018 21:10:49 +0400</lastBuildDate>
+    <pubDate>Wed, 14 Nov 2018 10:42:08 +0400</pubDate>
+    <lastBuildDate>Wed, 14 Nov 2018 10:42:08 +0400</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
     
       <item>
-        <title>VPN on Ubuntu Desktop: the user-friendly way</title>
+        <title>VPN on Linux Ubuntu Desktop: user-friendly way</title>
         <description>&lt;p&gt;What is better: VPN provider or own private VPN, based on VPS server? Even if it’s not a problem for you to manually setup the server (buy VPS and install/configure OpenVPN there), almost every VPN provider has &lt;strong&gt;multiple IP locations feature&lt;/strong&gt;. In one click you can switch your location from USA/New York to Europe/Amsterdam and so on. In case of your own VPN, IP is always the same.&lt;/p&gt;
 
 &lt;p&gt;The sad thing is that many of VPN providers don’t have a client for Linux. Here are who does:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Nord VPN (&lt;a href=&quot;https://nordvpn.com/download/linux/&quot;&gt;CLI&lt;/a&gt;, &lt;a href=&quot;https://nordvpn.com/tutorials/linux/openvpn/&quot;&gt;OpenVPN&lt;/a&gt;)&lt;/li&gt;
-  &lt;li&gt;Tunnel Bear (&lt;a href=&quot;https://www.tunnelbear.com/blog/linux_support/&quot;&gt;OpenVPN&lt;/a&gt; support)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.expressvpn.com/vpn-software/vpn-linux&quot;&gt;ExpressVPN&lt;/a&gt; (&lt;a href=&quot;https://www.expressvpn.com/support/vpn-setup/app-for-linux/&quot;&gt;CLI&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Nord VPN - &lt;a href=&quot;https://nordvpn.com/download/linux/&quot;&gt;CLI&lt;/a&gt;, &lt;a href=&quot;https://nordvpn.com/tutorials/linux/openvpn/&quot;&gt;OpenVPN&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Tunnel Bear - &lt;a href=&quot;https://www.tunnelbear.com/blog/linux_support/&quot;&gt;OpenVPN&lt;/a&gt; support&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.expressvpn.com/vpn-software/vpn-linux&quot;&gt;ExpressVPN&lt;/a&gt; - &lt;a href=&quot;https://www.expressvpn.com/support/vpn-setup/app-for-linux/&quot;&gt;CLI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Windscribe - &lt;a href=&quot;https://windscribe.com/guides/linux&quot;&gt;CLI&lt;/a&gt;, &lt;a href=&quot;https://windscribe.com/getconfig/openvpn&quot;&gt;OpenVPN&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;TorGuard - &lt;a href=&quot;https://torguard.net/downloads.php&quot;&gt;Clent and OpenVPN&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Know something else? Please tell in the comments below.&lt;/li&gt;
 &lt;/ul&gt;
 
