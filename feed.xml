@@ -5,13 +5,13 @@
     <description>Ruby is my first love ❤️. Crystal is second.</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Jan 2019 20:45:48 +0400</pubDate>
-    <lastBuildDate>Sat, 05 Jan 2019 20:45:48 +0400</lastBuildDate>
+    <pubDate>Sat, 05 Jan 2019 20:48:14 +0400</pubDate>
+    <lastBuildDate>Sat, 05 Jan 2019 20:48:14 +0400</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
     
       <item>
         <title>You can use Bundler without Gemfile</title>
-        <description>&lt;p&gt;Did you know that &lt;a href=&quot;https://bundler.io/v1.17/guides/bundler_in_a_single_file_ruby_script.html&quot;&gt;you can use Bundler inside single Ruby script&lt;/a&gt; (without Gemfile) and automatically install required dependencies for it?&lt;/p&gt;
+        <description>&lt;p&gt;Did you know that &lt;a href=&quot;https://bundler.io/v2.0/guides/bundler_in_a_single_file_ruby_script.html&quot;&gt;you can use Bundler inside single Ruby script&lt;/a&gt; (without Gemfile) and automatically install required dependencies for it?&lt;/p&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# example.rb&lt;/span&gt;
 
