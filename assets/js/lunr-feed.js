@@ -10,7 +10,7 @@ var index = lunr(function () {
 
 
     index.add({
-      title: "You can use Bundler without Gemfile",
+      title: "Did you know that you can use Bundler without Gemfile?",
       category: ["tech"],
       content: "Did you know that you can use Bundler inside single Ruby script (without Gemfile) and automatically install required dependencies for it?\n\n# example.rb\n\nrequire 'bundler/inline'\n\ngemfile do\n  source 'https://rubygems.org'\n  gem 'rest-client'\n  gem 'nokogiri'\nend\n\n###\n\nbody = RestClient.get(\"https://www.reddit.com/r/ruby/\").body\n\nputs \"Posts from r/ruby front page:\"\nNokogiri::HTML(body).xpath(\"//div[contains(@class, 'scrollerItem')]//h2\").each do |h2|\n  puts h2.text.strip\nend\n\n\n\n\nRun ruby example.rb (without bundle exec), and enjoy!\n\nThis is a nice feature that I wasn’t aware of. Best to use for small scripts and quick sketches.\n\n\n  Bonus: use Sublime Text snippet to paste bundler inline code block using tab trigger:\n\n\n1. Open Tools &gt; Developer &gt; New Snippet\n\n2. Paste following code into the snippet file:\n\n&lt;snippet&gt;\n\t&lt;content&gt;&lt;![CDATA[\nrequire 'bundler/inline'\n\ngemfile do\n  source 'https://rubygems.org'\nend\n]]&gt;&lt;/content&gt;\n\t&lt;tabTrigger&gt;bun&lt;/tabTrigger&gt;\n\t&lt;scope&gt;source.ruby&lt;/scope&gt;\n&lt;/snippet&gt;\n\n\n3. Save snippet (ctrl+s). Now try to open a new empty file with .rb extension and type bun + Tab key. Bundle inline block template will be pasted into the file.\n",
       tags: ["ruby","bundler","gems"],
@@ -101,7 +101,7 @@ var index = lunr(function () {
 
 
 var store = [{
-    "title": "You can use Bundler without Gemfile",
+    "title": "Did you know that you can use Bundler without Gemfile?",
     "link": "/tech/you-can-use-bundler-without-gemfile",
     "image": null,
     "date": "January 5, 2019",
