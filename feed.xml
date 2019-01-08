@@ -5,8 +5,8 @@
     <description>Ruby is my first love ❤️. Crystal is second.</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 05 Jan 2019 20:48:14 +0400</pubDate>
-    <lastBuildDate>Sat, 05 Jan 2019 20:48:14 +0400</lastBuildDate>
+    <pubDate>Tue, 08 Jan 2019 17:39:40 +0400</pubDate>
+    <lastBuildDate>Tue, 08 Jan 2019 17:39:40 +0400</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
     
       <item>
@@ -33,9 +33,34 @@
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
+&lt;!--more--&gt;
+
 &lt;p&gt;Run &lt;code class=&quot;highlighter-rouge&quot;&gt;ruby example.rb&lt;/code&gt; (without bundle exec), and enjoy!&lt;/p&gt;
 
 &lt;p&gt;This is a nice feature that I wasn’t aware of. Best to use for small scripts and quick sketches.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Bonus:&lt;/strong&gt; use Sublime Text snippet to paste &lt;code class=&quot;highlighter-rouge&quot;&gt;bundler inline&lt;/code&gt; code block using tab trigger:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;1.&lt;/strong&gt; Open &lt;code class=&quot;highlighter-rouge&quot;&gt;Tools&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;Developer&lt;/code&gt; &amp;gt; &lt;code class=&quot;highlighter-rouge&quot;&gt;New Snippet&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; Paste following code into the snippet file:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;snippet&amp;gt;
+	&amp;lt;content&amp;gt;&amp;lt;![CDATA[
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+end
+]]&amp;gt;&amp;lt;/content&amp;gt;
+	&amp;lt;tabTrigger&amp;gt;bun&amp;lt;/tabTrigger&amp;gt;
+	&amp;lt;scope&amp;gt;source.ruby&amp;lt;/scope&amp;gt;
+&amp;lt;/snippet&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;3.&lt;/strong&gt; Save snippet (ctrl+s). Now try to open a new empty file with &lt;code class=&quot;highlighter-rouge&quot;&gt;.rb&lt;/code&gt; extension and type &lt;code class=&quot;highlighter-rouge&quot;&gt;bun&lt;/code&gt; + &lt;code class=&quot;highlighter-rouge&quot;&gt;Tab&lt;/code&gt; key. Bundle inline block template will be pasted into the file.&lt;/p&gt;
 </description>
         <pubDate>Sat, 05 Jan 2019 16:00:00 +0400</pubDate>
         <link>https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile</link>

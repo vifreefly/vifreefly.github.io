@@ -251,9 +251,34 @@
 <span class="k">end</span>
 </code></pre></div></div>
 
+<!--more-->
+
 <p>Run <code class="highlighter-rouge">ruby example.rb</code> (without bundle exec), and enjoy!</p>
 
 <p>This is a nice feature that I wasn’t aware of. Best to use for small scripts and quick sketches.</p>
+
+<blockquote>
+  <p><strong>Bonus:</strong> use Sublime Text snippet to paste <code class="highlighter-rouge">bundler inline</code> code block using tab trigger:</p>
+</blockquote>
+
+<p><strong>1.</strong> Open <code class="highlighter-rouge">Tools</code> &gt; <code class="highlighter-rouge">Developer</code> &gt; <code class="highlighter-rouge">New Snippet</code></p>
+
+<p><strong>2.</strong> Paste following code into the snippet file:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;snippet&gt;
+	&lt;content&gt;&lt;![CDATA[
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+end
+]]&gt;&lt;/content&gt;
+	&lt;tabTrigger&gt;bun&lt;/tabTrigger&gt;
+	&lt;scope&gt;source.ruby&lt;/scope&gt;
+&lt;/snippet&gt;
+</code></pre></div></div>
+
+<p><strong>3.</strong> Save snippet (ctrl+s). Now try to open a new empty file with <code class="highlighter-rouge">.rb</code> extension and type <code class="highlighter-rouge">bun</code> + <code class="highlighter-rouge">Tab</code> key. Bundle inline block template will be pasted into the file.</p>
 
     </div>
 
