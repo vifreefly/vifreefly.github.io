@@ -5,19 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Did you know that you can use Bundler without Gemfile? | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
-    <meta property="og:title" content="Did you know that you can use Bundler without Gemfile? | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
-    <meta name="twitter:title" content="Did you know that you can use Bundler without Gemfile? | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <title>First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
+    <meta property="og:title" content="First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <meta name="twitter:title" content="First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
 
-    <meta name="description" content="Did you know that it's possible to use Bundler with a single Ruby script and without Gemfile?">
-    <meta name="description" property="og:description" content="Did you know that it's possible to use Bundler with a single Ruby script and without Gemfile?" />
-    <meta name="twitter:description" content="Did you know that it's possible to use Bundler with a single Ruby script and without Gemfile?" />
+    <meta name="description" content="">
+    <meta name="description" property="og:description" content="" />
+    <meta name="twitter:description" content="" />
 
     <meta name="twitter:card" content="summary_large_image" />
     
     <meta name="twitter:site" content="@vfreefl" />
     
-    <meta property="og:url" content="https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile" />
+    <meta property="og:url" content="https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server" />
 
     <meta property="og:image" content="" />
     <meta name="twitter:image" content="" />
@@ -96,7 +96,7 @@
     
     <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
 
-    <link rel="canonical" href="https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile">
+    <link rel="canonical" href="https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
 
@@ -222,7 +222,7 @@
                 <article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul class="clear">
-            <li><time datetime="2019-01-05T16:00:00+04:00" itemprop="datePublished">5 Jan, 2019</time></li>
+            <li><time datetime="2019-02-22T10:00:00+04:00" itemprop="datePublished">22 Feb, 2019</time></li>
             
                 
                 <li class="cats">
@@ -233,79 +233,123 @@
                 
             
         </ul>
-        <h2 itemprop="name headline">Did you know that you can use Bundler without Gemfile?</h2>
+        <h2 itemprop="name headline">First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only</h2>
     </header>
 
     <div class="post-content">
-        <p>Did you know that <a href="https://bundler.io/v2.0/guides/bundler_in_a_single_file_ruby_script.html">you can use Bundler inside single Ruby script</a> (without Gemfile) and automatically install required dependencies for it?</p>
+        <p><strong>1)</strong> Create on the remote server a <code class="highlighter-rouge">deploy</code> user:</p>
 
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># example.rb</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the server, as a root user</span>
 
-<span class="nb">require</span> <span class="s1">'bundler/inline'</span>
-
-<span class="n">gemfile</span> <span class="k">do</span>
-  <span class="n">source</span> <span class="s1">'https://rubygems.org'</span>
-  <span class="n">gem</span> <span class="s1">'rest-client'</span>
-  <span class="n">gem</span> <span class="s1">'nokogiri'</span>
-<span class="k">end</span>
-
-<span class="c1">###</span>
-
-<span class="n">body</span> <span class="o">=</span> <span class="no">RestClient</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="s2">"https://www.reddit.com/r/ruby/"</span><span class="p">).</span><span class="nf">body</span>
-
-<span class="nb">puts</span> <span class="s2">"Posts from r/ruby front page:"</span>
-<span class="no">Nokogiri</span><span class="o">::</span><span class="no">HTML</span><span class="p">(</span><span class="n">body</span><span class="p">).</span><span class="nf">xpath</span><span class="p">(</span><span class="s2">"//div[contains(@class, 'scrollerItem')]//h2"</span><span class="p">).</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">h2</span><span class="o">|</span>
-  <span class="nb">puts</span> <span class="n">h2</span><span class="p">.</span><span class="nf">text</span><span class="p">.</span><span class="nf">strip</span>
-<span class="k">end</span>
+<span class="nv">$ </span>adduser deploy
+<span class="nv">$ </span>adduser deploy <span class="nb">sudo</span>
 </code></pre></div></div>
 
-<!--more-->
-
-<p>Run <code class="highlighter-rouge">ruby example.rb</code> (without bundle exec), and enjoy!</p>
-
-<p>This is a nice feature that I wasn’t aware of. Best to use for small scripts and quick sketches.</p>
+<p><strong>2)</strong> Make sure that you can login to the server as a <code class="highlighter-rouge">deploy</code> user without password prompt: <!--more--></p>
 
 <blockquote>
-  <p><strong>Bonus:</strong> use Sublime Text snippet to paste <code class="highlighter-rouge">bundler inline</code> code block using tab trigger:</p>
+  <p>It assumes that you have ssh keypair already (<code class="highlighter-rouge">~/.ssh/id_rsa</code> and <code class="highlighter-rouge">~/.ssh/id_rsa.pub</code>) on your desktop.</p>
 </blockquote>
 
-<p><strong>1.</strong> Open <code class="highlighter-rouge">Tools</code> &gt; <code class="highlighter-rouge">Developer</code> &gt; <code class="highlighter-rouge">New Snippet</code></p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the desktop</span>
 
-<p><strong>2.</strong> Paste following code into the snippet file:</p>
+<span class="nv">$ </span>ssh-add
+<span class="nv">$ </span>ssh-copy-id deploy@deploy_server_ip
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;snippet&gt;
-	&lt;content&gt;&lt;![CDATA[
-require 'bundler/inline'
-
-gemfile do
-  source 'https://rubygems.org'
-end
-]]&gt;&lt;/content&gt;
-	&lt;tabTrigger&gt;bun&lt;/tabTrigger&gt;
-	&lt;scope&gt;source.ruby&lt;/scope&gt;
-&lt;/snippet&gt;
+<span class="c"># Now try to login to the server as deploy user:</span>
+<span class="nv">$ </span>ssh deploy@deploy_server_ip
 </code></pre></div></div>
 
-<p><strong>3.</strong> Save snippet (ctrl+s). Now try to open a new empty file with <code class="highlighter-rouge">.rb</code> extension and type <code class="highlighter-rouge">bun</code> + <code class="highlighter-rouge">Tab</code> key. Bundle inline block template will be pasted into the file.</p>
+<blockquote>
+  <p>If it didn’t work, and you get message like <code class="highlighter-rouge">Permission denied (publickey)</code>, it seems like password authentication disabled by default on your server (which is a good thing actually). Login to the server as a <code class="highlighter-rouge">root</code> again, then login to <code class="highlighter-rouge">deploy</code> user (<code class="highlighter-rouge">$ su - deploy</code>) and add your .pub key to the deploy’s <code class="highlighter-rouge">~/.ssh/authorized_keys</code> file:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh
+$ echo your_public_key_string_value &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; chmod 644 ~/.ssh/authorized_keys
+</code></pre></div></div>
+
+<p>If all went fine, you should be able to login without password (<code class="highlighter-rouge">$ ssh deploy@deploy_server_ip</code>).</p>
+
+<h2 id="bonus-disable-password-login-authentication">Bonus: disable password login authentication</h2>
+
+<blockquote>
+  <p>Some VPS providers don’t have an option to allow provide a custom public SSH key for the root user’s authentication while creating a new VPS server. In this case, you’ll get automatically generated password (for root user) after VPS will be created, which then can be used to login to the server. But, using password authentication isn’t a good practice and can leave security vulnerabilities, such as brute force attack. It’s better to disable password auth and use only SSH key authentication.</p>
+</blockquote>
+
+<p><strong>1)</strong> Copy your public SSH key to the server’s root user using <code class="highlighter-rouge">ssh-copy-id</code> tool:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ssh-copy-id root@deploy_server_ip
+</code></pre></div></div>
+
+<p>Example:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ssh-copy-id root@5.180.150.210
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/home/bob/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@5.180.150.210's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'root@5.180.150.210'"
+and check to make sure that only the key(s) you wanted were added.
+</code></pre></div></div>
+
+<p>If all went fine, you’ll be able to login to the server without a password prompt. Do it and:</p>
+
+<p><strong>2)</strong> On the server (as a root user), open <code class="highlighter-rouge">/etc/ssh/sshd_config</code> file (you can use <code class="highlighter-rouge">nano</code> editor),</p>
+
+<blockquote>
+  <p>This is an important step, before process it MAKE SURE THAT you can sucessfully login to the server using SSH key, (not password). Otherwise you can lose access to your server.</p>
+</blockquote>
+
+<p>and navigate to <code class="highlighter-rouge">PasswordAuthentication</code> line. Make sure that it’s not comment-out (not starts with #), and set value to <code class="highlighter-rouge">no</code>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PasswordAuthentication no
+</code></pre></div></div>
+
+<p>Then save the file.</p>
+
+<p><strong>3)</strong> Restart <code class="highlighter-rouge">sshd</code> to apply new settings: <code class="highlighter-rouge">$ service ssh restart</code>. All done!</p>
 
     </div>
 
     <footer class="post-footer">
         <div class="share">Share
             <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Did you know that you can use Bundler without Gemfile?&p[summary]=Did you know that you can use Bundler inside single Ruby script (without Gemfile) and automatically install required dependencies for it?...&p[url]=https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile&text=Did you know that you can use Bundler inside single Ruby script (without Gemfile) and automatically install required dependencies for it?...&hashtags=ruby,bundler,gems," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only&p[summary]=1) Create on the remote server a deploy user:
+
+# on the server, as a root user
+
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&p[url]=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server&text=1) Create on the remote server a deploy user:
+
+# on the server, as a root user
+
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&hashtags=ubuntu,linux,digitalocean,deploy,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
             </ul>
         </div>
         
         <div class="tags">
             <ul>
                 
-                <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
+                <li><a href="https://victorafanasev.info/tag/ubuntu">ubuntu</a></li>
                 
-                <li><a href="https://victorafanasev.info/tag/bundler">bundler</a></li>
+                <li><a href="https://victorafanasev.info/tag/linux">linux</a></li>
                 
-                <li><a href="https://victorafanasev.info/tag/gems">gems</a></li>
+                <li><a href="https://victorafanasev.info/tag/digitalocean">digitalocean</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/deploy">deploy</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
                 
             </ul>
         </div>
@@ -318,8 +362,8 @@ end
     <div id="disqus_thread"></div>
     <script>
         var disqus_config = function () {
-            this.page.url = 'https://victorafanasev.info/tech/you-can-use-bundler-without-gemfile';
-            this.page.identifier = '1/5/2019';
+            this.page.url = 'https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server';
+            this.page.identifier = '2/22/2019';
         };
         (function() {
             var d = document, s = d.createElement('script');

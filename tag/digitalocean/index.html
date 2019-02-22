@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - rails | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
-    <meta property="og:title" content="Posts Tagged - rails | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
-    <meta name="twitter:title" content="Posts Tagged - rails | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <title>Posts Tagged - digitalocean | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
+    <meta property="og:title" content="Posts Tagged - digitalocean | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <meta name="twitter:title" content="Posts Tagged - digitalocean | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
 
     <meta name="description" content="Ruby is my first love ❤️. Crystal is second.">
     <meta name="description" property="og:description" content="Ruby is my first love ❤️. Crystal is second." />
@@ -17,7 +17,7 @@
     
     <meta name="twitter:site" content="@vfreefl" />
     
-    <meta property="og:url" content="https://victorafanasev.info/tag/rails/" />
+    <meta property="og:url" content="https://victorafanasev.info/tag/digitalocean/" />
 
     <meta property="og:image" content="" />
     <meta name="twitter:image" content="" />
@@ -96,7 +96,7 @@
     
     <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
 
-    <link rel="canonical" href="https://victorafanasev.info/tag/rails/">
+    <link rel="canonical" href="https://victorafanasev.info/tag/digitalocean/">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
 
@@ -219,37 +219,11 @@
 </div>
 
 
-                <h1>Posts Tagged - rails</h1>
+                <h1>Posts Tagged - digitalocean</h1>
 
 
     
         
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
     
         
     
@@ -257,7 +231,7 @@
         <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
             <header class="post-header">
                 <ul class="clear">
-                    <li><time datetime="2018-10-07T11:00:00+04:00" itemprop="datePublished">7 Oct, 2018</time></li>
+                    <li><time datetime="2019-02-22T10:00:00+04:00" itemprop="datePublished">22 Feb, 2019</time></li>
                     
                     <li class="cats">
                         
@@ -266,45 +240,61 @@
                     </li>
                     
                 </ul>
-                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy">Capistrano: automatically check if remote origin updated before deploy</a></h2>
+                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server">First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only</a></h2>
             </header>
 
             <div class="post-content">
-                <p>Sometimes I forget to push local commits to the remote repository before <code class="highlighter-rouge">$ bundle exec cap production deploy</code>.</p>
+                <p><strong>1)</strong> Create on the remote server a <code class="highlighter-rouge">deploy</code> user:</p>
 
-<p>It is possible to check the <code class="highlighter-rouge">git status</code> before command, and if there are uncommited and/or unpushed changes, abort the deploy command.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the server, as a root user</span>
+
+<span class="nv">$ </span>adduser deploy
+<span class="nv">$ </span>adduser deploy <span class="nb">sudo</span>
+</code></pre></div></div>
+
+<p><strong>2)</strong> Make sure that you can login to the server as a <code class="highlighter-rouge">deploy</code> user without password prompt:</p>
 
 
 
                 
-                    <p><a href="/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" role="button">Read More</a></p>
+                    <p><a href="/tech/first-thing-to-do-after-creating-a-new-vps-server" role="button">Read More</a></p>
                 
             </div>
 
             <footer class="post-footer">
                 <div class="share">Share
                     <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Capistrano: automatically check if remote origin updated before deploy&p[summary]=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only&p[summary]=1) Create on the remote server a deploy user:
 
-It is possible to check th...&p[url]=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy&text=Sometimes I forget to push local commits to the remote repository before $ bundle exec cap production deploy.
+# on the server, as a root user
 
-It is possible to check th...&hashtags=capistrano,rails,git,ruby,automation,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&p[url]=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server&text=1) Create on the remote server a deploy user:
+
+# on the server, as a root user
+
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&hashtags=ubuntu,linux,digitalocean,deploy,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
                     </ul>
                 </div>
                 
                 <div class="tags">
                     <ul>
                         
-                        <li><a href="https://victorafanasev.info/tag/capistrano">capistrano</a></li>
+                        <li><a href="https://victorafanasev.info/tag/ubuntu">ubuntu</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/rails">rails</a></li>
+                        <li><a href="https://victorafanasev.info/tag/linux">linux</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/git">git</a></li>
+                        <li><a href="https://victorafanasev.info/tag/digitalocean">digitalocean</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
+                        <li><a href="https://victorafanasev.info/tag/deploy">deploy</a></li>
                         
                         <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
                         
@@ -313,6 +303,32 @@ It is possible to check th...&hashtags=capistrano,rails,git,ruby,automation,devo
                 
             </footer>
         </article>
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
         
     
         

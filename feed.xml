@@ -5,9 +5,105 @@
     <description>Ruby is my first love ❤️. Crystal is second.</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 26 Jan 2019 00:53:58 +0400</pubDate>
-    <lastBuildDate>Sat, 26 Jan 2019 00:53:58 +0400</lastBuildDate>
+    <pubDate>Fri, 22 Feb 2019 15:20:00 +0400</pubDate>
+    <lastBuildDate>Fri, 22 Feb 2019 15:20:00 +0400</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
+    
+      <item>
+        <title>First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only</title>
+        <description>&lt;p&gt;&lt;strong&gt;1)&lt;/strong&gt; Create on the remote server a &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy&lt;/code&gt; user:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on the server, as a root user&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adduser deploy
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;adduser deploy &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2)&lt;/strong&gt; Make sure that you can login to the server as a &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy&lt;/code&gt; user without password prompt: &lt;!--more--&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It assumes that you have ssh keypair already (&lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/id_rsa&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/id_rsa.pub&lt;/code&gt;) on your desktop.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on the desktop&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-add
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-copy-id deploy@deploy_server_ip
+
+&lt;span class=&quot;c&quot;&gt;# Now try to login to the server as deploy user:&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh deploy@deploy_server_ip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;If it didn’t work, and you get message like &lt;code class=&quot;highlighter-rouge&quot;&gt;Permission denied (publickey)&lt;/code&gt;, it seems like password authentication disabled by default on your server (which is a good thing actually). Login to the server as a &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt; again, then login to &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy&lt;/code&gt; user (&lt;code class=&quot;highlighter-rouge&quot;&gt;$ su - deploy&lt;/code&gt;) and add your .pub key to the deploy’s &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/authorized_keys&lt;/code&gt; file:&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir -p ~/.ssh &amp;amp;&amp;amp; chmod 700 ~/.ssh
+$ echo your_public_key_string_value &amp;gt;&amp;gt; ~/.ssh/authorized_keys &amp;amp;&amp;amp; chmod 644 ~/.ssh/authorized_keys
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If all went fine, you should be able to login without password (&lt;code class=&quot;highlighter-rouge&quot;&gt;$ ssh deploy@deploy_server_ip&lt;/code&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;bonus-disable-password-login-authentication&quot;&gt;Bonus: disable password login authentication&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Some VPS providers don’t have an option to allow provide a custom public SSH key for the root user’s authentication while creating a new VPS server. In this case, you’ll get automatically generated password (for root user) after VPS will be created, which then can be used to login to the server. But, using password authentication isn’t a good practice and can leave security vulnerabilities, such as brute force attack. It’s better to disable password auth and use only SSH key authentication.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;1)&lt;/strong&gt; Copy your public SSH key to the server’s root user using &lt;code class=&quot;highlighter-rouge&quot;&gt;ssh-copy-id&lt;/code&gt; tool:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-copy-id root@deploy_server_ip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ssh-copy-id root@5.180.150.210
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &quot;/home/bob/.ssh/id_rsa.pub&quot;
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@5.180.150.210's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   &quot;ssh 'root@5.180.150.210'&quot;
+and check to make sure that only the key(s) you wanted were added.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If all went fine, you’ll be able to login to the server without a password prompt. Do it and:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2)&lt;/strong&gt; On the server (as a root user), open &lt;code class=&quot;highlighter-rouge&quot;&gt;/etc/ssh/sshd_config&lt;/code&gt; file (you can use &lt;code class=&quot;highlighter-rouge&quot;&gt;nano&lt;/code&gt; editor),&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This is an important step, before process it MAKE SURE THAT you can sucessfully login to the server using SSH key, (not password). Otherwise you can lose access to your server.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and navigate to &lt;code class=&quot;highlighter-rouge&quot;&gt;PasswordAuthentication&lt;/code&gt; line. Make sure that it’s not comment-out (not starts with #), and set value to &lt;code class=&quot;highlighter-rouge&quot;&gt;no&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;PasswordAuthentication no
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then save the file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3)&lt;/strong&gt; Restart &lt;code class=&quot;highlighter-rouge&quot;&gt;sshd&lt;/code&gt; to apply new settings: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ service ssh restart&lt;/code&gt;. All done!&lt;/p&gt;
+</description>
+        <pubDate>Fri, 22 Feb 2019 10:00:00 +0400</pubDate>
+        <link>https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server</guid>
+        
+        <category>ubuntu</category>
+        
+        <category>linux</category>
+        
+        <category>digitalocean</category>
+        
+        <category>deploy</category>
+        
+        <category>devops</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
     
       <item>
         <title>Did you know that you can use Bundler without Gemfile?</title>
@@ -774,97 +870,6 @@ main
         <category>devops</category>
         
         <category>aws</category>
-        
-        
-        <category>tech</category>
-        
-      </item>
-    
-      <item>
-        <title>Simplest configuration block implementation for a ruby gem ever</title>
-        <description>&lt;p&gt;For my own gems, I want to have a configuration block, which usually looks like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;There are a lot of articles how to implement this functionality:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://brandonhilkert.com/blog/ruby-gem-configuration-patterns/&quot;&gt;Ruby Gem Configuration Patterns&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://robots.thoughtbot.com/mygem-configure-block&quot;&gt;MyGem.configure Block&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://lizabinante.com/blog/creating-a-configurable-ruby-gem/&quot;&gt;Creating a configurable Ruby gem&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://juanitofatas.com/blog/2015/05/19/rubygem_configuration_pattern&quot;&gt;RubyGem Configuration Pattern&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.skcript.com/svr/the-easiest-configuration-block-for-your-ruby-gems/&quot;&gt;The easiest configuration block for your Ruby gems&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.toshimaru.net/ruby-configuration-pattern/&quot;&gt;Ruby Gem Configuration Pattern&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Isn’t it still looks too complicated? Can’t be a configuration object just a plain ruby hash?&lt;/p&gt;
-
-&lt;p&gt;Yes, it can:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Yourgem&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And now:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:some_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; { :some_config =&amp;gt; &quot;foobarbaz&quot; }&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;ss&quot;&gt;:some_config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;foobarbaz&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Looks clean and simple, but there is one restriction: instead of classy &lt;code class=&quot;highlighter-rouge&quot;&gt;Yourgem.configuration.some_config&lt;/code&gt; we have to act with it like with hash (because configuration value it’s a hash): &lt;code class=&quot;highlighter-rouge&quot;&gt;Yourgem.configuration[:some_config]&lt;/code&gt;. To solve this problem, we’ll use Ruby’s built-in &lt;a href=&quot;https://ruby-doc.org/stdlib-2.0.0/libdoc/ostruct/rdoc/OpenStruct.html&quot;&gt;OpenStruct&lt;/a&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'ostruct'&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Yourgem&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;
-    &lt;span class=&quot;vi&quot;&gt;@configuration&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||=&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;OpenStruct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;new&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;yield&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And now:&lt;/p&gt;
-
-&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configure&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;foobarbaz&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-
-&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# =&amp;gt; #&amp;lt;OpenStruct some_config=&quot;foobarbaz&quot;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;no&quot;&gt;Yourgem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;configuration&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;some_config&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#=&amp;gt; &quot;foobarbaz&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Clean and simple.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;Comments at &lt;a href=&quot;https://medium.com/@vfreefly/the-most-simple-configuration-block-implementation-for-a-ruby-gem-815fe1dad5dc&quot;&gt;Medium&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Wed, 09 May 2018 12:00:00 +0400</pubDate>
-        <link>https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem</link>
-        <guid isPermaLink="true">https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem</guid>
-        
-        <category>ruby</category>
-        
-        <category>gems</category>
         
         
         <category>tech</category>

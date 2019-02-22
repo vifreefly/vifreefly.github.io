@@ -182,6 +182,14 @@
             
                 
             
+                
+            
+                
+            
+                
+            
+                
+            
         </div>
         
     
@@ -212,6 +220,82 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul class="clear">
+            <li><time datetime="2019-02-22T10:00:00+04:00" itemprop="datePublished">22 Feb, 2019</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/tech/">tech</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server">First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only</a></h2>
+    </header>
+
+    <div class="post-content">
+        <p><strong>1)</strong> Create on the remote server a <code class="highlighter-rouge">deploy</code> user:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the server, as a root user</span>
+
+<span class="nv">$ </span>adduser deploy
+<span class="nv">$ </span>adduser deploy <span class="nb">sudo</span>
+</code></pre></div></div>
+
+<p><strong>2)</strong> Make sure that you can login to the server as a <code class="highlighter-rouge">deploy</code> user without password prompt:</p>
+
+
+
+        
+            <p><a href="https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server" role="button">Read More</a></p>
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only&p[summary]=1) Create on the remote server a deploy user:
+
+# on the server, as a root user
+
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&p[url]=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/first-thing-to-do-after-creating-a-new-vps-server&text=1) Create on the remote server a deploy user:
+
+# on the server, as a root user
+
+$ adduser deploy
+$ adduser deploy sudo
+
+
+2) Make sure tha...&hashtags=ubuntu,linux,digitalocean,deploy,devops," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://victorafanasev.info/tag/ubuntu">ubuntu</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/linux">linux</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/digitalocean">digitalocean</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/deploy">deploy</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul class="clear">
@@ -743,64 +827,17 @@ People often forget that Bash actually a ...&hashtags=linux,bash,devops,automati
     </footer>
 </article>
 
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul class="clear">
-            <li><time datetime="2018-05-09T12:00:00+04:00" itemprop="datePublished">9 May, 2018</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/tech/">tech</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem">Simplest configuration block implementation for a ruby gem ever</a></h2>
-    </header>
-
-    <div class="post-content">
-        <p>For my own gems, I want to have a configuration block, which usually looks like this:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Yourgem</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-  <span class="n">config</span><span class="p">.</span><span class="nf">some_config</span> <span class="o">=</span> <span class="s2">"foobarbaz"</span>
-<span class="k">end</span>
-</code></pre></div></div>
 
 
+<div class="pagination clear" role="navigation" aria-label="pagination">
+    
 
-        
-            <p><a href="https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem" role="button">Read More</a></p>
-        
-    </div>
+    <span class="page_number">Page 1 of 2</span>
 
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Simplest configuration block implementation for a ruby gem ever&p[summary]=For my own gems, I want to have a configuration block, which usually looks like this:
-
-Yourgem.configure do |config|
-  config.some_config...&p[url]=https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem&text=For my own gems, I want to have a configuration block, which usually looks like this:
-
-Yourgem.configure do |config|
-  config.some_config...&hashtags=ruby,gems," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://victorafanasev.info/tag/ruby">ruby</a></li>
-                
-                <li><a href="https://victorafanasev.info/tag/gems">gems</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-
+    
+        <a href="/page2/" class="next">Next &rarr;</a>
+    
+</div>
 
 
             </main>
