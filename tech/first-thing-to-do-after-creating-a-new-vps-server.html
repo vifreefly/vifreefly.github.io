@@ -272,7 +272,9 @@ $ echo your_public_key_string_value &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; c
 
 <p>If all went fine, you should be able to login without password (<code class="highlighter-rouge">$ ssh deploy@deploy_server_ip</code>).</p>
 
-<h2 id="bonus-disable-password-login-authentication">Bonus: disable password login authentication</h2>
+<h2 id="also-you-can">Also you can:</h2>
+
+<h3 id="disable-password-login-authentication">disable password login authentication</h3>
 
 <blockquote>
   <p>Some VPS providers don’t have an option to allow provide a custom public SSH key for the root user’s authentication while creating a new VPS server. In this case, you’ll get automatically generated password (for root user) after VPS will be created, which then can be used to login to the server. But, using password authentication isn’t a good practice and can leave security vulnerabilities, such as brute force attack. It’s better to disable password auth and use only SSH key authentication.</p>
@@ -313,6 +315,15 @@ and check to make sure that only the key(s) you wanted were added.
 <p>Then save the file.</p>
 
 <p><strong>3)</strong> Restart <code class="highlighter-rouge">sshd</code> to apply new settings: <code class="highlighter-rouge">$ service ssh restart</code>. All done!</p>
+
+<h3 id="set-utc-timezone-on-the-server">set UTC timezone on the server</h3>
+
+<blockquote>
+  <p>It’s always preferable to have universal UTC timezone on the server, not the local one. To set UTC timezone run:</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>timedatectl set-timezone UTC
+</code></pre></div></div>
 
     </div>
 
