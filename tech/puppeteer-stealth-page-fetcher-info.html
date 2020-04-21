@@ -246,13 +246,13 @@
 <p>It happends because browser environment in automation mode is different than in the normal one. There are possible ways how to change the environment so it will look similar to a normal non-automated browser, you can read more info about it in the following articles:</p>
 
 <ul>
-  <li>https://intoli.com/blog/making-chrome-headless-undetectable/</li>
-  <li>https://intoli.com/blog/not-possible-to-block-chrome-headless/</li>
+  <li><a href="https://intoli.com/blog/making-chrome-headless-undetectable/">https://intoli.com/blog/making-chrome-headless-undetectable/</a></li>
+  <li><a href="https://intoli.com/blog/not-possible-to-block-chrome-headless/">https://intoli.com/blog/not-possible-to-block-chrome-headless/</a></li>
 </ul>
 
 <p>At the moment, the most modern and well-used Automation Browser API is Puppeteer for Headless Chrome. It is also has a lot of useful options which gives the possibility to change the browser environment. On the other hand, there is Selenium, which is less configurable, has less settings to tweak and in general not a good fit for web scraping/web automation if we want to hide the fact that browser is automated.</p>
 
-<p>Puppeteer also has ready to use plugins which allows to mimic the normal non-automated browser like this one https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth .</p>
+<p>Puppeteer also has ready to use plugins which allows to mimic the normal non-automated browser like this one <a href="https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth">https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth</a> .</p>
 
 <p>I’ve build a <a href="https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher">simple Puppeteer (with puppeteer-extra-plugin-stealth enabled) script</a> which can be called from a command line with a provided webpage url and will print HTML DOM output back to the console. It’s as easy as:</p>
 
@@ -266,7 +266,7 @@
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="sb">`node page_fetcher.js --url "https://www.google.com/"`</span>
 </code></pre></div></div>
 
-<p>Multiple options are supported, like providing a user-agent, proxy, custom delay, make a screenshot or run in a visible mode (for debug). Check it out here: https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher .</p>
+<p>Multiple options are supported, like providing a user-agent, proxy, custom delay, make a screenshot or run in a visible mode (for debug). Check it out here: <a href="https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher">https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher</a> .</p>
 
     </div>
 
