@@ -5,9 +5,53 @@
     <description>Ruby is my first love ❤️. Crystal is second.</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Aug 2019 12:13:43 +0300</pubDate>
-    <lastBuildDate>Thu, 01 Aug 2019 12:13:43 +0300</lastBuildDate>
+    <pubDate>Tue, 21 Apr 2020 11:04:17 +0300</pubDate>
+    <lastBuildDate>Tue, 21 Apr 2020 11:04:17 +0300</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
+    
+      <item>
+        <title>Puppeteer Stealth Page Fetcher Info</title>
+        <description>&lt;p&gt;During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and then block it (there are ready to use services to protect websites from webscraping, for example like &lt;a href=&quot;https://www.imperva.com/products/bot-management/&quot;&gt;Distil&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;It happends because browser environment in automation mode is different than in the normal one. There are possible ways how to change the environment so it will look similar to a normal non-automated browser, you can read more info about it in the following articles:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://intoli.com/blog/making-chrome-headless-undetectable/&lt;/li&gt;
+  &lt;li&gt;https://intoli.com/blog/not-possible-to-block-chrome-headless/&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;At the moment, the most modern and well-used Automation Browser API is Puppeteer for Headless Chrome. It is also has a lot of useful options which gives the possibility to change the browser environment. On the other hand, there is Selenium, which is less configurable, has less settings to tweak and in general not a good fit for web scraping/web automation if we want to hide the fact that browser is automated.&lt;/p&gt;
+
+&lt;p&gt;Puppeteer also has ready to use plugins which allows to mimic the normal non-automated browser like this one https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth .&lt;/p&gt;
+
+&lt;p&gt;I’ve build a &lt;a href=&quot;https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher&quot;&gt;simple Puppeteer (with puppeteer-extra-plugin-stealth enabled) script&lt;/a&gt; which can be called from a command line with a provided webpage url and will print HTML DOM output back to the console. It’s as easy as:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;node page_fetcher.js &lt;span class=&quot;nt&quot;&gt;--url&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;https://www.google.com/&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# &amp;lt;html&amp;gt;...&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You can also can it from any other programming language, here is an example for Ruby:&lt;/p&gt;
+
+&lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`node page_fetcher.js --url &quot;https://www.google.com/&quot;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Multiple options are supported, like providing a user-agent, proxy, custom delay, make a screenshot or run in a visible mode (for debug). Check it out here: https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher .&lt;/p&gt;
+</description>
+        <pubDate>Tue, 21 Apr 2020 10:00:00 +0300</pubDate>
+        <link>https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info</link>
+        <guid isPermaLink="true">https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info</guid>
+        
+        <category>node</category>
+        
+        <category>puppeteer</category>
+        
+        <category>automation</category>
+        
+        
+        <category>tech</category>
+        
+      </item>
     
       <item>
         <title>First thing to do after creating a new VPS server: setup deploy user and enable SSH-key authentication only</title>
@@ -838,51 +882,6 @@ main
         <category>automation</category>
         
         <category>devops</category>
-        
-        
-        <category>tech</category>
-        
-      </item>
-    
-      <item>
-        <title>How to create AWS restricted credentials (example for s3)</title>
-        <description>&lt;p&gt;1) Go to &lt;a href=&quot;https://console.aws.amazon.com/iam/home?#/users&quot;&gt;https://console.aws.amazon.com/iam/home?#/users&lt;/a&gt; and create new user then press next&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;2) Set permissions for your user by &lt;em&gt;Attach one or more existing policies directly&lt;/em&gt; and then press next&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*VJC8IvPGhGK8ojRvehoW_g.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*VJC8IvPGhGK8ojRvehoW_g.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;3) Check if everything is ok and press &lt;em&gt;create user&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;4)  All done, save your &lt;em&gt;Access key ID&lt;/em&gt; and &lt;em&gt;Secret access key&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*M9FoR218z2HQcfo8bxR0IA.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*M9FoR218z2HQcfo8bxR0IA.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;You can see all your credentials here &lt;a href=&quot;https://console.aws.amazon.com/iam/home?#/users&quot;&gt;https://console.aws.amazon.com/iam/home?#/users&lt;/a&gt; (1 user = 1 credential)&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://cdn-images-1.medium.com/max/2000/1*gH3H2OVd61WwGkuRmG8onw.jpeg&quot;&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/2000/1*gH3H2OVd61WwGkuRmG8onw.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Now you can use this credential and it will have access only for s3 operations, all other operations will fail to process (like creating EC2 instances).&lt;/p&gt;
-
-&lt;p&gt;It is good practice to use different (and restricted) credentials (that means different users, because 1 user = 1 credential) for different apps so you can always control all your AWS usage per app.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Additional reading:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Restrict Steps &lt;a href=&quot;https://www.netguru.co/blog/my-first-5-minutes-on-an-aws-account&quot;&gt;https://www.netguru.co/blog/my-first-5-minutes-on-an-aws-account&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Best Security Practices by amazon &lt;a href=&quot;https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console&quot;&gt;https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html?icmpid=docs_iam_console&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 06 Jun 2018 12:01:00 +0300</pubDate>
-        <link>https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3</link>
-        <guid isPermaLink="true">https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3</guid>
-        
-        <category>devops</category>
-        
-        <category>aws</category>
         
         
         <category>tech</category>

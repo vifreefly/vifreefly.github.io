@@ -190,6 +190,10 @@
             
                 
             
+                
+            
+                
+            
         </div>
         
     
@@ -220,6 +224,76 @@
 
 
                 
+<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <ul class="clear">
+            <li><time datetime="2020-04-21T10:00:00+03:00" itemprop="datePublished">21 Apr, 2020</time></li>
+            
+                <li class="cats">
+                    
+                        <a href="/categories/tech/">tech</a>
+                    
+                </li>
+            
+        </ul>
+        <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info">Puppeteer Stealth Page Fetcher Info</a></h2>
+    </header>
+
+    <div class="post-content">
+        <p>During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and then block it (there are ready to use services to protect websites from webscraping, for example like <a href="https://www.imperva.com/products/bot-management/">Distil</a>).</p>
+
+<p>It happends because browser environment in automation mode is different than in the normal one. There are possible ways how to change the environment so it will look similar to a normal non-automated browser, you can read more info about it in the following articles:</p>
+
+<ul>
+  <li>https://intoli.com/blog/making-chrome-headless-undetectable/</li>
+  <li>https://intoli.com/blog/not-possible-to-block-chrome-headless/</li>
+</ul>
+
+<p>At the moment, the most modern and well-used Automation Browser API is Puppeteer for Headless Chrome. It is also has a lot of useful options which gives the possibility to change the browser environment. On the other hand, there is Selenium, which is less configurable, has less settings to tweak and in general not a good fit for web scraping/web automation if we want to hide the fact that browser is automated.</p>
+
+<p>Puppeteer also has ready to use plugins which allows to mimic the normal non-automated browser like this one https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth .</p>
+
+<p>I’ve build a <a href="https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher">simple Puppeteer (with puppeteer-extra-plugin-stealth enabled) script</a> which can be called from a command line with a provided webpage url and will print HTML DOM output back to the console. It’s as easy as:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>node page_fetcher.js <span class="nt">--url</span> <span class="s2">"https://www.google.com/"</span>
+
+<span class="c"># &lt;html&gt;...&lt;/html&gt;</span>
+</code></pre></div></div>
+
+<p>You can also can it from any other programming language, here is an example for Ruby:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="sb">`node page_fetcher.js --url "https://www.google.com/"`</span>
+</code></pre></div></div>
+
+<p>Multiple options are supported, like providing a user-agent, proxy, custom delay, make a screenshot or run in a visible mode (for debug). Check it out here: https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher .</p>
+
+
+        
+    </div>
+
+    <footer class="post-footer">
+        <div class="share">Share
+            <ul class="social-networks">
+                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Puppeteer Stealth Page Fetcher Info&p[summary]=During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and ...&p[url]=https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info&text=During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and ...&hashtags=node,puppeteer,automation," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+            </ul>
+        </div>
+        
+        <div class="tags">
+            <ul>
+                
+                <li><a href="https://victorafanasev.info/tag/node">node</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/puppeteer">puppeteer</a></li>
+                
+                <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
+                
+            </ul>
+        </div>
+        
+    </footer>
+</article>
+
 <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
     <header class="post-header">
         <ul class="clear">
@@ -748,64 +822,6 @@ People often forget that Bash actually a ...&hashtags=linux,bash,devops,automati
                 <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
                 
                 <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
-                
-            </ul>
-        </div>
-        
-    </footer>
-</article>
-
-<article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <ul class="clear">
-            <li><time datetime="2018-06-06T12:01:00+03:00" itemprop="datePublished">6 Jun, 2018</time></li>
-            
-                <li class="cats">
-                    
-                        <a href="/categories/tech/">tech</a>
-                    
-                </li>
-            
-        </ul>
-        <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3">How to create AWS restricted credentials (example for s3)</a></h2>
-    </header>
-
-    <div class="post-content">
-        <p>1) Go to <a href="https://console.aws.amazon.com/iam/home?#/users">https://console.aws.amazon.com/iam/home?#/users</a> and create new user then press next</p>
-
-<p><a href="https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg"><img src="https://cdn-images-1.medium.com/max/2000/1*YBWJHkmt1dKAI8PtcJsSHg.jpeg" alt="" /></a></p>
-
-<p>2) Set permissions for your user by <em>Attach one or more existing policies directly</em> and then press next</p>
-
-
-
-        
-            <p><a href="https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3" role="button">Read More</a></p>
-        
-    </div>
-
-    <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=How to create AWS restricted credentials (example for s3)&p[summary]=1) Go to https://console.aws.amazon.com/iam/home?#/users and create new user then press next
-
-
-
-2) Set permissions for your user by Attac...&p[url]=https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/how-to-create-aws-restricted-credentials-example-for-s3&text=1) Go to https://console.aws.amazon.com/iam/home?#/users and create new user then press next
-
-
-
-2) Set permissions for your user by Attac...&hashtags=devops,aws," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
-        
-        <div class="tags">
-            <ul>
-                
-                <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
-                
-                <li><a href="https://victorafanasev.info/tag/aws">aws</a></li>
                 
             </ul>
         </div>

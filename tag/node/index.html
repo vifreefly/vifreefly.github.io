@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Posts Tagged - bash | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
-    <meta property="og:title" content="Posts Tagged - bash | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
-    <meta name="twitter:title" content="Posts Tagged - bash | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <title>Posts Tagged - node | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad </title>
+    <meta property="og:title" content="Posts Tagged - node | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
+    <meta name="twitter:title" content="Posts Tagged - node | Blog | Victor Afanasev &mdash; Web Developer and Digital Nomad " />
 
     <meta name="description" content="Ruby is my first love ❤️. Crystal is second.">
     <meta name="description" property="og:description" content="Ruby is my first love ❤️. Crystal is second." />
@@ -17,7 +17,7 @@
     
     <meta name="twitter:site" content="@vfreefl" />
     
-    <meta property="og:url" content="https://victorafanasev.info/tag/bash/" />
+    <meta property="og:url" content="https://victorafanasev.info/tag/node/" />
 
     <meta property="og:image" content="" />
     <meta name="twitter:image" content="" />
@@ -96,7 +96,7 @@
     
     <link rel="stylesheet" href="https://victorafanasev.info/assets/css/main.css">
 
-    <link rel="canonical" href="https://victorafanasev.info/tag/bash/">
+    <link rel="canonical" href="https://victorafanasev.info/tag/node/">
 
     <link rel="alternate" type="application/rss+xml" title="" href="https://victorafanasev.info/feed.xml">
 
@@ -223,99 +223,15 @@
 </div>
 
 
-                <h1>Posts Tagged - bash</h1>
+                <h1>Posts Tagged - node</h1>
 
 
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-
-    
-        
     
         
         <article class="post" role="article" itemscope itemtype="http://schema.org/BlogPosting">
             <header class="post-header">
                 <ul class="clear">
-                    <li><time datetime="2018-06-21T12:01:00+03:00" itemprop="datePublished">21 Jun, 2018</time></li>
+                    <li><time datetime="2020-04-21T10:00:00+03:00" itemprop="datePublished">21 Apr, 2020</time></li>
                     
                     <li class="cats">
                         
@@ -324,51 +240,57 @@
                     </li>
                     
                 </ul>
-                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions">Increase readability of your bash scripts using functions</a></h2>
+                <h2 itemprop="name headline"><a href="https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info">Puppeteer Stealth Page Fetcher Info</a></h2>
             </header>
 
             <div class="post-content">
-                <p>You can find it very obvious, but there are tons of bash scripts out there written very badly.</p>
+                <p>During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and then block it (there are ready to use services to protect websites from webscraping, for example like <a href="https://www.imperva.com/products/bot-management/">Distil</a>).</p>
 
-<p>People often forget that Bash <a href="https://stackoverflow.com/questions/28693737/is-bash-a-programming-language">actually a programming language</a>. And just like <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions">JavaScript</a>, <a href="https://docs.python.org/2.4/lib/typesmethods.html">Python</a>, <a href="http://rubylearning.com/satishtalim/writing_own_ruby_methods.html">Ruby</a>, <a href="https://tour.golang.org/basics/4">GoLang</a> and many others languages, Bash language has functions.</p>
+<p>It happends because browser environment in automation mode is different than in the normal one. There are possible ways how to change the environment so it will look similar to a normal non-automated browser, you can read more info about it in the following articles:</p>
 
-<p>Let’s check simple bash function which prints green string taken as an argument:</p>
+<ul>
+  <li>https://intoli.com/blog/making-chrome-headless-undetectable/</li>
+  <li>https://intoli.com/blog/not-possible-to-block-chrome-headless/</li>
+</ul>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>logger<span class="o">()</span> <span class="o">{</span>
-  <span class="nb">local </span><span class="nv">GREEN</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[1;32m"</span>
-  <span class="nb">local </span><span class="nv">NC</span><span class="o">=</span><span class="s2">"</span><span class="se">\0</span><span class="s2">33[00m"</span>
+<p>At the moment, the most modern and well-used Automation Browser API is Puppeteer for Headless Chrome. It is also has a lot of useful options which gives the possibility to change the browser environment. On the other hand, there is Selenium, which is less configurable, has less settings to tweak and in general not a good fit for web scraping/web automation if we want to hide the fact that browser is automated.</p>
 
-  <span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"</span><span class="k">${</span><span class="nv">GREEN</span><span class="k">}</span><span class="s2">Logger: </span><span class="nv">$1</span><span class="s2"> </span><span class="k">${</span><span class="nv">NC</span><span class="k">}</span><span class="s2">"</span>
-<span class="o">}</span>
+<p>Puppeteer also has ready to use plugins which allows to mimic the normal non-automated browser like this one https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth .</p>
+
+<p>I’ve build a <a href="https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher">simple Puppeteer (with puppeteer-extra-plugin-stealth enabled) script</a> which can be called from a command line with a provided webpage url and will print HTML DOM output back to the console. It’s as easy as:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>node page_fetcher.js <span class="nt">--url</span> <span class="s2">"https://www.google.com/"</span>
+
+<span class="c"># &lt;html&gt;...&lt;/html&gt;</span>
 </code></pre></div></div>
 
+<p>You can also can it from any other programming language, here is an example for Ruby:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">html</span> <span class="o">=</span> <span class="sb">`node page_fetcher.js --url "https://www.google.com/"`</span>
+</code></pre></div></div>
+
+<p>Multiple options are supported, like providing a user-agent, proxy, custom delay, make a screenshot or run in a visible mode (for debug). Check it out here: https://github.com/vifreefly/Puppeteer-Stealth-Page-Fetcher .</p>
 
 
                 
-                    <p><a href="/tech/increase-readability-of-your-bash-scripts-using-functions" role="button">Read More</a></p>
+                    <p><a href="/tech/puppeteer-stealth-page-fetcher-info" role="button">Read More</a></p>
                 
             </div>
 
             <footer class="post-footer">
                 <div class="share">Share
                     <ul class="social-networks">
-                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Increase readability of your bash scripts using functions&p[summary]=You can find it very obvious, but there are tons of bash scripts out there written very badly.
-
-People often forget that Bash actually a ...&p[url]=https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
-                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/increase-readability-of-your-bash-scripts-using-functions&text=You can find it very obvious, but there are tons of bash scripts out there written very badly.
-
-People often forget that Bash actually a ...&hashtags=linux,bash,devops,automation," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
+                        <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]=Puppeteer Stealth Page Fetcher Info&p[summary]=During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and ...&p[url]=https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></a></li>
+                        <li class="share-twitter"><a href="http://twitter.com/share?url=https://victorafanasev.info/tech/puppeteer-stealth-page-fetcher-info&text=During the web scraping using Selenium or Headless Chrome, some websites can recognize that they are visited by an automated browser and ...&hashtags=node,puppeteer,automation," rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://victorafanasev.info/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
                     </ul>
                 </div>
                 
                 <div class="tags">
                     <ul>
                         
-                        <li><a href="https://victorafanasev.info/tag/linux">linux</a></li>
+                        <li><a href="https://victorafanasev.info/tag/node">node</a></li>
                         
-                        <li><a href="https://victorafanasev.info/tag/bash">bash</a></li>
-                        
-                        <li><a href="https://victorafanasev.info/tag/devops">devops</a></li>
+                        <li><a href="https://victorafanasev.info/tag/puppeteer">puppeteer</a></li>
                         
                         <li><a href="https://victorafanasev.info/tag/automation">automation</a></li>
                         
@@ -377,6 +299,90 @@ People often forget that Bash actually a ...&hashtags=linux,bash,devops,automati
                 
             </footer>
         </article>
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    
+        
+    
         
     
         
