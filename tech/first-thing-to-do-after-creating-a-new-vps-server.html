@@ -257,12 +257,16 @@
   <p>It assumes that you have ssh keypair already (<code class="highlighter-rouge">~/.ssh/id_rsa</code> and <code class="highlighter-rouge">~/.ssh/id_rsa.pub</code>) on your desktop.</p>
 </blockquote>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the desktop</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on desktop:</span>
 
 <span class="nv">$ </span>ssh-add
-<span class="nv">$ </span>ssh-copy-id deploy@deploy_server_ip
+<span class="nv">$ </span>ssh-copy-id <span class="nt">-i</span> ~/.ssh/id_rsa.pub deploy@deploy_server_ip
+</code></pre></div></div>
 
-<span class="c"># Now try to login to the server as deploy user:</span>
+<p>Now try to login to the server as deploy user:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on desktop:</span>
+
 <span class="nv">$ </span>ssh deploy@deploy_server_ip
 </code></pre></div></div>
 
@@ -270,11 +274,17 @@
   <p>If it didn’t work, and you get message like <code class="highlighter-rouge">Permission denied (publickey)</code>, it seems like password authentication disabled by default on your server (which is a good thing actually). Login to the server as a <code class="highlighter-rouge">root</code> again, then login to <code class="highlighter-rouge">deploy</code> user (<code class="highlighter-rouge">$ su - deploy</code>) and add your .pub key to the deploy’s <code class="highlighter-rouge">~/.ssh/authorized_keys</code> file:</p>
 </blockquote>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ mkdir -p ~/.ssh &amp;&amp; chmod 700 ~/.ssh
-$ echo your_public_key_string_value &gt;&gt; ~/.ssh/authorized_keys &amp;&amp; chmod 644 ~/.ssh/authorized_keys
+<blockquote>
+  <p>Where <code class="highlighter-rouge">your_public_key_string_value</code> is a content of <code class="highlighter-rouge">~/.ssh/id_rsa.pub</code> file on your desktop machine.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># on the server:</span>
+
+<span class="nv">$ </span>mkdir <span class="nt">-p</span> ~/.ssh <span class="o">&amp;&amp;</span> chmod 700 ~/.ssh
+<span class="nv">$ </span><span class="nb">echo </span>your_public_key_string_value <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys <span class="o">&amp;&amp;</span> chmod 644 ~/.ssh/authorized_keys
 </code></pre></div></div>
 
-<p>If all went fine, you should be able to login without password (<code class="highlighter-rouge">$ ssh deploy@deploy_server_ip</code>).</p>
+<p>If all went fine, you should be able to login to the server without entering a password: <code class="highlighter-rouge">$ ssh deploy@deploy_server_ip</code></p>
 
 <h2 id="also-you-can">Also you can:</h2>
 

@@ -5,8 +5,8 @@
     <description>Ruby is my first love ❤️. Crystal is second.</description>
     <link>https://victorafanasev.info/</link>
     <atom:link href="https://victorafanasev.info/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Apr 2020 11:06:47 +0300</pubDate>
-    <lastBuildDate>Tue, 21 Apr 2020 11:06:47 +0300</lastBuildDate>
+    <pubDate>Tue, 12 May 2020 00:15:40 +0300</pubDate>
+    <lastBuildDate>Tue, 12 May 2020 00:15:40 +0300</lastBuildDate>
     <generator>Jekyll v3.6.3</generator>
     
       <item>
@@ -71,12 +71,16 @@
   &lt;p&gt;It assumes that you have ssh keypair already (&lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/id_rsa&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/id_rsa.pub&lt;/code&gt;) on your desktop.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on the desktop&lt;/span&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on desktop:&lt;/span&gt;
 
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-add
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-copy-id deploy@deploy_server_ip
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh-copy-id &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; ~/.ssh/id_rsa.pub deploy@deploy_server_ip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;span class=&quot;c&quot;&gt;# Now try to login to the server as deploy user:&lt;/span&gt;
+&lt;p&gt;Now try to login to the server as deploy user:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on desktop:&lt;/span&gt;
+
 &lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ssh deploy@deploy_server_ip
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
@@ -84,11 +88,17 @@
   &lt;p&gt;If it didn’t work, and you get message like &lt;code class=&quot;highlighter-rouge&quot;&gt;Permission denied (publickey)&lt;/code&gt;, it seems like password authentication disabled by default on your server (which is a good thing actually). Login to the server as a &lt;code class=&quot;highlighter-rouge&quot;&gt;root&lt;/code&gt; again, then login to &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy&lt;/code&gt; user (&lt;code class=&quot;highlighter-rouge&quot;&gt;$ su - deploy&lt;/code&gt;) and add your .pub key to the deploy’s &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/authorized_keys&lt;/code&gt; file:&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ mkdir -p ~/.ssh &amp;amp;&amp;amp; chmod 700 ~/.ssh
-$ echo your_public_key_string_value &amp;gt;&amp;gt; ~/.ssh/authorized_keys &amp;amp;&amp;amp; chmod 644 ~/.ssh/authorized_keys
+&lt;blockquote&gt;
+  &lt;p&gt;Where &lt;code class=&quot;highlighter-rouge&quot;&gt;your_public_key_string_value&lt;/code&gt; is a content of &lt;code class=&quot;highlighter-rouge&quot;&gt;~/.ssh/id_rsa.pub&lt;/code&gt; file on your desktop machine.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# on the server:&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkdir &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; ~/.ssh &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod 700 ~/.ssh
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;your_public_key_string_value &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; ~/.ssh/authorized_keys &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; chmod 644 ~/.ssh/authorized_keys
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;If all went fine, you should be able to login without password (&lt;code class=&quot;highlighter-rouge&quot;&gt;$ ssh deploy@deploy_server_ip&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;If all went fine, you should be able to login to the server without entering a password: &lt;code class=&quot;highlighter-rouge&quot;&gt;$ ssh deploy@deploy_server_ip&lt;/code&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;also-you-can&quot;&gt;Also you can:&lt;/h2&gt;
 
