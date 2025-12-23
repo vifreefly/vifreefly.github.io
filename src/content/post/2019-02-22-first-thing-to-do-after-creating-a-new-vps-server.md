@@ -75,7 +75,7 @@ If all went well, you'll be able to log in to the server without a password prom
 
 2. On the server (as the root user), open the `/etc/ssh/sshd_config` file (you can use the `nano` editor).
 
-This is an important step. Before proceeding, MAKE SURE THAT you can successfully log in to the server using an SSH key (not a password). Otherwise, you can lose access to your server.
+(this is an important step. Before proceeding, MAKE SURE THAT you can successfully log in to the server using an SSH key (not a password). Otherwise, you can lose access to your server)
 
 Navigate to the `PasswordAuthentication` line. Make sure that it's not commented out (doesn't start with #), and set the value to `no`:
 
