@@ -1,0 +1,28 @@
+---
+interface Props {
+	url: string;
+	identifier: string;
+}
+
+const { url, identifier } = Astro.props;
+const disqusShortname = "blog-victor-afanasev";
+---
+
+<aside class="comments mt-12 border-t border-gray-600 pt-8 dark:border-gray-400" role="complementary">
+	<div id="disqus_thread"></div>
+	<script is:inline define:vars={{ url, identifier, disqusShortname }}>
+		var disqus_config = function () {
+			this.page.url = url;
+			this.page.identifier = identifier;
+		};
+		(function() {
+			var d = document, s = d.createElement('script');
+			s.src = '//' + disqusShortname + '.disqus.com/embed.js';
+			s.setAttribute('data-timestamp', +new Date());
+			(d.head || d.body).appendChild(s);
+		})();
+	</script>
+	<noscript>
+		Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+	</noscript>
+</aside>
