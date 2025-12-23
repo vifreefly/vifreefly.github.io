@@ -22,7 +22,6 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
-	base: "/",
 	redirects: {
 		// Redirect old /tech/* URLs to new /posts/* URLs
 		"/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy": "/posts/capistrano-automatically-check-if-remote-origin-updated-before-deploy",
