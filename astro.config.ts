@@ -22,6 +22,26 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.url,
+	base: "/",
+	redirects: {
+		// Redirect old /tech/* URLs to new /posts/* URLs
+		"/tech/capistrano-automatically-check-if-remote-origin-updated-before-deploy": "/posts/capistrano-automatically-check-if-remote-origin-updated-before-deploy",
+		"/tech/create-free-https-socks5-proxy-servers-using-free-ec2-automatically": "/posts/create-free-https-socks5-proxy-servers-using-free-ec2-automatically",
+		"/tech/deploy-jekyll-build-to-github-pages-using-git-pre-push-hook": "/posts/deploy-jekyll-build-to-github-pages-using-git-pre-push-hook",
+		"/tech/first-thing-to-do-after-creating-a-new-vps-server": "/posts/first-thing-to-do-after-creating-a-new-vps-server",
+		"/tech/how-to-create-aws-restricted-credentials-example-for-s3": "/posts/how-to-create-aws-restricted-credentials-example-for-s3",
+		"/tech/how-to-use-pagy-with-sequel-and-sinatra": "/posts/how-to-use-pagy-with-sequel-and-sinatra",
+		"/tech/how-to-use-sequel-with-activerecord-database": "/posts/how-to-use-sequel-with-activerecord-database",
+		"/tech/increase-readability-of-your-bash-scripts-using-functions": "/posts/increase-readability-of-your-bash-scripts-using-functions",
+		"/tech/puppeteer-stealth-page-fetcher-info": "/posts/puppeteer-stealth-page-fetcher-info",
+		"/tech/static-sites-for-rubists-forget-about-jekyll-and-feel-yourself-like-at-home-with-middleman": "/posts/static-sites-for-rubists-forget-about-jekyll-and-feel-yourself-like-at-home-with-middleman",
+		"/tech/the-most-simple-configuration-block-implementation-for-a-ruby-gem": "/posts/the-most-simple-configuration-block-implementation-for-a-ruby-gem",
+		"/tech/vpn-on-ubuntu-desktop-the-user-friendly-way": "/posts/vpn-on-ubuntu-desktop-the-user-friendly-way",
+		"/tech/you-can-use-bundler-without-gemfile": "/posts/you-can-use-bundler-without-gemfile",
+		// Also redirect old /categories/tech to /posts
+		"/categories/tech": "/posts",
+		"/category/tech": "/posts",
+	},
 	image: {
 		domains: ["webmention.io"],
 	},

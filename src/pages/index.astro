@@ -8,7 +8,7 @@ import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 // Posts
-const MAX_POSTS = 10;
+const MAX_POSTS = 100;
 const allPosts = await getAllPosts();
 const allPostsByDate = allPosts.sort(collectionDateSort) as CollectionEntry<"post">[];
 const latestPosts = allPostsByDate.slice(0, MAX_POSTS);
@@ -27,12 +27,30 @@ const latestNotes = allNotes
 
 <PageLayout meta={{ title: "Home" }}>
 	<section>
-		<h1 class="title mb-12">Hello World!</h1>
-		<p class="mb-4">
-			Hi, I’m a theme for Astro, a simple starter that you can use to create your website or blog.
-			If you want to know more about how you can customise me, add more posts, and make it your own,
-			click on the GitHub icon link below and it will take you to my repo.
-		</p>
+		<h1 class="title mb-12">Victor Afanasev</h1>
+		<div class="mb-8 space-y-4">
+			<p>
+				I've spent nearly a decade building Ruby-based platforms for startups across the US, Canada,
+				and Europe, scaling backend infrastructure and complex automation systems.
+			</p>
+			<p>
+				Lately, I've been focused on the intersection of web automation and AI—building tools that
+				bridge the gap between Large Language Models and the open web.
+			</p>
+			<p>
+				I'm the creator of <a
+					href="https://github.com/vifreefly/kimuraframework"
+					class="cactus-link"
+					target="_blank"
+					rel="noopener">Kimurai</a
+				> (1.1k⭐), an open-source Ruby web scraping framework, along with several other open-source projects
+				for automation and infrastructure.
+			</p>
+			<p>
+				Interested in collaborating or just want to chat about the future of automation? Reach out
+				at <a href="mailto:vicfreefly@gmail.com" class="cactus-link">vicfreefly@gmail.com</a>.
+			</p>
+		</div>
 		<SocialList />
 	</section>
 	{

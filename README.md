@@ -5,6 +5,16 @@
   Astro Cactus
 </h1>
 
+```
+cd dist/
+git init
+git remote add origin git@github.com:vifreefly/vifreefly.github.io.git
+git add .
+git commit -m "Update"
+git push --set-upstream origin master
+git push -f origin master
+```
+
 Astro Cactus is a simple opinionated starter built with [Astro](https://astro.build). Use it to create an easy-to-use blog or website.
 
 ## Table Of Contents

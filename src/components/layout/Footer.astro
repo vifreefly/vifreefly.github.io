@@ -8,8 +8,7 @@ const year = new Date().getFullYear();
 	class="mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top font-semibold text-gray-600 sm:flex-row sm:justify-between sm:text-xs dark:text-gray-400"
 >
 	<div class="me-0 sm:me-4">
-		&copy; {siteConfig.author}
-		{year}.<span class="inline-block">&nbsp;🚀&nbsp;{siteConfig.title}</span>
+		&copy; {siteConfig.author} {year}
 	</div>
 	<nav
 		aria-labelledby="footer_links"
@@ -23,5 +22,36 @@ const year = new Date().getFullYear();
 				</a>
 			))
 		}
+		<button
+			id="theme-toggle-footer"
+			class="hover:text-global-text px-4 py-2 hover:underline sm:py-0 cursor-pointer"
+			aria-label="Toggle theme"
+		>
+			<span class="theme-toggle-text">Light</span>
+		</button>
 	</nav>
 </footer>
+
+<script>
+	const themeToggle = document.getElementById('theme-toggle-footer');
+	const themeText = document.querySelector('.theme-toggle-text');
+
+	function updateThemeText() {
+		const currentTheme = document.documentElement.getAttribute('data-theme');
+		if (themeText) {
+			themeText.textContent = currentTheme === 'dark' ? 'Light' : 'Dark';
+		}
+	}
+
+	// Initialize theme text
+	updateThemeText();
+
+	themeToggle?.addEventListener('click', () => {
+		const root = document.documentElement;
+		const currentTheme = root.getAttribute('data-theme');
+		const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+		root.setAttribute('data-theme', newTheme);
+		localStorage.setItem('theme', newTheme);
+		updateThemeText();
+	});
+</script>
