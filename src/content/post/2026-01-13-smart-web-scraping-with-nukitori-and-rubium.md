@@ -2,7 +2,7 @@
 title: "Smart AI Web Scraping with Nukitori and Rubium/Kimurai"
 description: "Learn how to extract structured data from web pages using AI-powered Nukitori gem combined with Rubium headless browser or Kimurai framework"
 publishDate: "13 Jan 2026"
-tags: ["ruby", "web-scraping", "ai", "llm"]
+tags: ["ruby", "web-scraping", "ai", "llm", "kimurai"]
 ---
 
 Web scraping often means writing brittle XPath or CSS selectors that break whenever a website updates its layout. What if you could just describe the data you want, and let AI figure out how to extract it?
@@ -99,7 +99,7 @@ The generated schema file is human-readable JSON. You can inspect it, tweak the 
 
 ## Using Nukitori with Kimurai Framework
 
-If you're building production scrapers, [Kimurai](https://github.com/vifreefly/kimurai) is a full-featured web scraping framework for Ruby. Nukitori is integrated as a first-class citizen - just use the `extract` helper method with the same schema DSL.
+If you're building production scrapers, [Kimurai](https://github.com/vifreefly/kimuraframework) is a full-featured web scraping framework for Ruby. Nukitori is integrated as a first-class citizen - just use the `extract` helper method with the same schema DSL.
 
 ```ruby
 require 'kimurai'
